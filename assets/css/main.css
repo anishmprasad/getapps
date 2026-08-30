@@ -657,6 +657,7 @@ body.cursor-hot .cursor { opacity: 0; }
   transition: transform .55s var(--ease);
 }
 .pcard:hover .pcard__ico { transform: rotate(-8deg) scale(1.06); }
+.pcard__title { display: grid; }
 .pcard__name { font-family: var(--display); font-weight: 600; font-size: 1.12rem; letter-spacing: -0.03em; }
 .pcard__cat { font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
 .pcard p { color: var(--muted); font-size: .92rem; }

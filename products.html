@@ -32,6 +32,15 @@
     } catch (e) {}
   })();
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YRJQE0EMSY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YRJQE0EMSY');
+</script>
 </head>
 <body>
 
@@ -58,7 +67,7 @@
 
 <header class="nav">
   <div class="nav__in">
-    <a class="brand" href="index.html" aria-label="GetApps home">
+    <a class="brand" href="/" aria-label="GetApps home">
       <svg class="brand__mark" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
         <defs>
           <linearGradient id="bmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
@@ -74,9 +83,9 @@
     </a>
 
     <nav class="nav__links" aria-label="Primary">
-      <a class="nav__link" href="products.html" aria-current="page"><span>Products</span></a>
-      <a class="nav__link" href="about.html"><span>About</span></a>
-      <a class="nav__link" href="support.html"><span>Support</span></a>
+      <a class="nav__link" href="/products" aria-current="page"><span>Products</span></a>
+      <a class="nav__link" href="/about"><span>About</span></a>
+      <a class="nav__link" href="/support"><span>Support</span></a>
     </nav>
 
     <div class="nav__side">
@@ -88,7 +97,7 @@
           <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
         </svg>
       </button>
-      <a class="btn btn--sm hide-sm" href="support.html#contact" data-magnetic="0.22">Get started</a>
+      <a class="btn btn--sm hide-sm" href="/support#contact" data-magnetic="0.22">Get started</a>
       <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
         <i></i><i></i><i></i>
       </button>
@@ -97,10 +106,10 @@
 </header>
 
 <div class="drawer" id="drawer">
-  <a class="drawer__link" href="products.html">Products <span>01</span></a>
-  <a class="drawer__link" href="about.html">About <span>02</span></a>
-  <a class="drawer__link" href="support.html">Support <span>03</span></a>
-  <a class="drawer__link" href="support.html#contact">Get started <span>04</span></a>
+  <a class="drawer__link" href="/products">Products <span>01</span></a>
+  <a class="drawer__link" href="/about">About <span>02</span></a>
+  <a class="drawer__link" href="/support">Support <span>03</span></a>
+  <a class="drawer__link" href="/support#contact">Get started <span>04</span></a>
   <div class="drawer__foot">
     <span class="status-pill"><i></i> All systems operational</span>
   </div>
@@ -116,14 +125,14 @@
       <span class="blob blob--2" style="opacity:.22"></span>
     </div>
     <div class="wrap phero__in">
-      <div class="crumbs rv"><a href="index.html">Home</a> <span>/</span> <span>Products</span></div>
+      <div class="crumbs rv"><a href="/">Home</a> <span>/</span> <span>Products</span></div>
       <h1 data-split>Sixteen apps.<br>One spine.</h1>
       <p class="phero__lead rv" style="--d:400ms">
         Every product below runs on the same account, the same permissions and the same customer
         graph. Switch one on and it is provisioned in seconds — with your data already in it.
       </p>
       <div class="hero__cta rv" style="--d:520ms">
-        <a class="btn" href="support.html#contact" data-magnetic="0.2">Start free
+        <a class="btn" href="/support#contact" data-magnetic="0.2">Start free
           <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn btn--ghost" href="#plans">Compare plans</a>
@@ -374,10 +383,10 @@
         <h2 data-split>Switch one app on.<br>See how far it gets you.</h2>
         <p>Nothing to migrate and nothing to uninstall. Start with a single product and add the rest whenever it makes sense.</p>
         <div class="cta__row">
-          <a class="btn btn--lg" href="support.html#contact" data-magnetic="0.2">Start free
+          <a class="btn btn--lg" href="/support#contact" data-magnetic="0.2">Start free
             <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="btn btn--lg btn--ghost" href="about.html">Read our story</a>
+          <a class="btn btn--lg btn--ghost" href="/about">Read our story</a>
         </div>
       </div>
     </div>
@@ -389,7 +398,7 @@
   <div class="wrap">
     <div class="foot__grid">
       <div class="foot__about">
-        <a class="brand" href="index.html" aria-label="GetApps home">
+        <a class="brand" href="/" aria-label="GetApps home">
           <svg class="brand__mark" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
             <defs>
               <linearGradient id="fmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
@@ -410,33 +419,33 @@
       <div>
         <h4>Platform</h4>
         <ul>
-          <li><a href="products.html">All products</a></li>
-          <li><a href="products.html#Business">Business</a></li>
-          <li><a href="products.html#Developer">Developer</a></li>
-          <li><a href="products.html#Marketing">Marketing</a></li>
-          <li><a href="index.html#platform">Why GetApps</a></li>
+          <li><a href="/products">All products</a></li>
+          <li><a href="/products#Business">Business</a></li>
+          <li><a href="/products#Developer">Developer</a></li>
+          <li><a href="/products#Marketing">Marketing</a></li>
+          <li><a href="/">Why GetApps</a></li>
         </ul>
       </div>
 
       <div>
         <h4>Company</h4>
         <ul>
-          <li><a href="about.html">About us</a></li>
-          <li><a href="about.html#story">Our story</a></li>
-          <li><a href="about.html#values">Values</a></li>
-          <li><a href="about.html#team">Team</a></li>
-          <li><a href="about.html#careers">Careers</a></li>
+          <li><a href="/about">About us</a></li>
+          <li><a href="/about#story">Our story</a></li>
+          <li><a href="/about#values">Values</a></li>
+          <li><a href="/about#team">Team</a></li>
+          <li><a href="/about#careers">Careers</a></li>
         </ul>
       </div>
 
       <div>
         <h4>Support</h4>
         <ul>
-          <li><a href="support.html">Help centre</a></li>
-          <li><a href="support.html#faq">FAQ</a></li>
-          <li><a href="support.html#contact">Contact us</a></li>
-          <li><a href="support.html#status">System status</a></li>
-          <li><a href="support.html#sla">Response times</a></li>
+          <li><a href="/support">Help centre</a></li>
+          <li><a href="/support#faq">FAQ</a></li>
+          <li><a href="/support#contact">Contact us</a></li>
+          <li><a href="/support#status">System status</a></li>
+          <li><a href="/support#sla">Response times</a></li>
         </ul>
       </div>
     </div>
@@ -446,10 +455,10 @@
     <div class="foot__bar">
       <span>&copy; <span data-year>2026</span> GetApps Technologies. All rights reserved.</span>
       <nav aria-label="Legal">
-        <a href="support.html#legal">Privacy</a>
-        <a href="support.html#legal">Terms</a>
-        <a href="support.html#legal">Security</a>
-        <a href="support.html#status">Status</a>
+        <a href="/support#legal">Privacy</a>
+        <a href="/support#legal">Terms</a>
+        <a href="/support#legal">Security</a>
+        <a href="/support#status">Status</a>
       </nav>
       <div class="socials">
         <a class="icon-btn" href="#" aria-label="GetApps on X">

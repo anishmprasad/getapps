@@ -1,12 +1,36 @@
 # Ad inventory
 
-Ad space is **reserved but not wired**. Every slot renders a neutral placeholder
-at exactly the height the real creative will occupy, so switching advertising on
-causes **zero cumulative layout shift** — the reserved box is already the right
-size before anything fills it.
+> **Status: every ad position is currently commented out.** No ad markup ships,
+> nothing renders, and no space is reserved. The inventory below is the plan for
+> when an ad account is live — the positions are already chosen and placed, just
+> disabled.
 
-Slot geometry lives in one place: `sites/_shared/js/ads.js`. Adding a slot to a
-page is one attribute.
+## Turning positions on and off
+
+One command flips all 32 positions across the three sites:
+
+```bash
+node tools/ads.mjs --status   # what is on and off right now
+node tools/ads.mjs --on       # bring every position back
+node tools/ads.mjs --off      # comment every position out again
+```
+
+Disabled blocks are wrapped in `GA:AD:OFF` markers, so the round trip is exact —
+`--off` followed by `--on` restores every file byte for byte. That covers the
+markup in the HTML pages and the slot the GetInterest calculator injects into its
+results panel.
+
+`<script src="/assets/js/ads.js">` is deliberately left in place on every page.
+It is the code that fills slots and is completely inert when no slot markup
+exists, so leaving it means re-enabling is that one command and nothing else.
+
+When the positions are on, every slot renders a neutral placeholder at exactly
+the height the real creative will occupy, so switching to live advertising causes
+**zero cumulative layout shift** — the reserved box is already the right size
+before anything fills it.
+
+Slot geometry lives in one place: `sites/_shared/js/ads.js`. Adding a new
+position to a page is one attribute.
 
 ```html
 <div class="wrap">
@@ -29,7 +53,14 @@ page is one attribute.
 `sidebar-sticky` carries `desktopOnly`, so it is removed below 1180px rather
 than being squeezed — a 300×600 has nowhere sensible to go on a phone.
 
-## Current placement
+On `/banks` the 300px rail track only exists when there is an `<aside>` to put in
+it (`.rail:has(> aside)`), so with the position commented out the rate table uses
+the full width instead of sitting beside an empty gutter. No CSS change is needed
+either way.
+
+## Planned placement
+
+These are the positions already written into the pages, currently commented out.
 
 | Page | Slots |
 | --- | --- |
@@ -47,10 +78,10 @@ registered with `GAds.refresh()`.
 
 Privacy pages carry no advertising at all — they exist to be read and trusted.
 
-## Turning it on
+## Wiring a network
 
-`ads.js` is network-agnostic on purpose. One adapter function is the whole
-integration:
+After `node tools/ads.mjs --on`, `ads.js` is network-agnostic on purpose. One
+adapter function is the whole integration:
 
 ```js
 GAds.setAdapter(function (slot) {

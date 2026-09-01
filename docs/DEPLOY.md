@@ -96,6 +96,6 @@ cannot reach production.
 2. Consider a separate GA4 property or stream per subdomain. All three currently
    report into the main site's `G-YRJQE0EMSY`, which is fine to start with but
    mixes tool traffic into marketing-site numbers.
-3. Wire advertising when there is traffic worth selling. See
-   `docs/AD-INVENTORY.md` — the slots and their reserved geometry already exist,
-   so it is one adapter function.
+3. Advertising is **off**: every position is commented out until an ad account
+   exists. `node tools/ads.mjs --on` brings all 32 back, then one adapter
+   function wires a network. See `docs/AD-INVENTORY.md`.

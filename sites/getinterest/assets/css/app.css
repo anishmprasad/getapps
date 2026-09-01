@@ -167,9 +167,10 @@ details.adv[open] > summary::before { content: "−"; }
 .bankbar__count { font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; color: var(--faint); text-transform: uppercase; }
 .unit { font-family: var(--font); font-size: .72rem; color: var(--faint); }
 .empty { padding: 46px 24px; text-align: center; color: var(--muted); font-size: .93rem; }
-.rail { display: grid; grid-template-columns: minmax(0,1fr) 300px; gap: 26px; align-items: start; }
-/* The sticky ad rail is commented out until the ad account is live. Collapse
-   to a single column rather than leaving a 300px gutter; this reverts on its
-   own the moment the <aside> comes back. */
-.rail:not(:has(> aside)) { grid-template-columns: minmax(0, 1fr); }
+/* One column by default; the 300px ad rail track only exists when there is an
+   <aside> to put in it. Written this way round so that the ad slots being
+   commented out needs no CSS change, and a browser without :has() support
+   degrades to the table using full width rather than to an empty gutter. */
+.rail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; align-items: start; }
+.rail:has(> aside) { grid-template-columns: minmax(0, 1fr) 300px; }
 @media (max-width: 1180px) { .rail { grid-template-columns: 1fr; } }

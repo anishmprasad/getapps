@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-product="pdf">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Remove PDF Password Online — Free, Nothing Uploaded | GetPDF</title>
+<meta name="description" content="Remove the password from a protected PDF for free. Runs entirely in your browser — your file is never uploaded, and text and quality are untouched.">
+<meta name="theme-color" content="#06070B">
+<link rel="canonical" href="https://getpdf.getapps.tech/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetPDF">
+<meta property="og:title" content="GetPDF — remove a PDF password without uploading it">
+<meta property="og:description" content="Remove the password from a protected PDF for free. Runs entirely in your browser — your file is never uploaded, and text and quality are untouched.">
+<meta property="og:url" content="https://getpdf.getapps.tech/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GetPDF — remove a PDF password without uploading it">
+<meta name="twitter:description" content="Remove the password from a protected PDF for free. Runs entirely in your browser — your file is never uploaded, and text and quality are untouched.">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+<script>
+  document.documentElement.classList.add("js");
+  (function () {
+    try {
+      var s = localStorage.getItem("ga-theme");
+      if (!s) s = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", s);
+    } catch (e) {}
+  })();
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "GetPDF", "url": "https://getpdf.getapps.tech/", "description": "Remove the password and owner restrictions from a PDF, entirely in the browser.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any modern browser", "browserRequirements": "Requires JavaScript", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "GetApps", "url": "https://getapps.tech/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my PDF uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. GetPDF ships a copy of qpdf compiled to WebAssembly, and that engine runs inside your browser tab. Your file is read from disk into memory, decrypted there, and handed back as a download. Open your browser's network tab while you use it — after the page and the 1.3 MB engine have loaded, there are no further requests. You can also disconnect from the internet entirely and it will still work."}}, {"@type": "Question", "name": "Do I need to know the password?", "acceptedAnswer": {"@type": "Answer", "text": "For a document open password, yes — this is not a cracking tool and it will not guess or brute-force anything. If the PDF only carries owner restrictions (it opens fine but blocks printing, copying or editing), no password is needed and GetPDF removes those restrictions on its own."}}, {"@type": "Question", "name": "What is the difference between a user password and an owner password?", "acceptedAnswer": {"@type": "Answer", "text": "A user password — sometimes called the document open password — is required to view the file at all. An owner password leaves the file readable but sets permission flags that block printing, copying text, extracting pages or annotating. A PDF can have either, both, or neither. GetPDF detects which case it is looking at and tells you."}}, {"@type": "Question", "name": "Does the unlocked file lose any quality?", "acceptedAnswer": {"@type": "Answer", "text": "None. qpdf decrypts the document's existing objects and rewrites the file structure — it does not re-render, rasterise or recompress anything. Text stays selectable, vectors stay sharp, fonts and images are the originals, and form fields, bookmarks and links survive. The output is byte-for-byte the same content without the encryption layer."}}, {"@type": "Question", "name": "Can I unlock several files at once?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Drop as many as you like and they queue up. If they share a password, tick “Try this password on every locked file” once and the rest unlock without you retyping it."}}, {"@type": "Question", "name": "Is it legal to remove a PDF password?", "acceptedAnswer": {"@type": "Answer", "text": "It depends entirely on the document and where you are. Removing protection from a file you own, or one you have been given permission to use — your own bank statement, a payslip, a document your employer sent you — is normally fine. Stripping protection from someone else's copyrighted or confidential material is not. You are responsible for having the right to do what you do here."}}, {"@type": "Question", "name": "Is there a file size limit?", "acceptedAnswer": {"@type": "Answer", "text": "The engine works in your browser's memory, so very large files depend on your device. The interface caps uploads at 100 MB, which covers the overwhelming majority of statements, reports and scanned documents. A machine with plenty of RAM will handle the top of that range comfortably."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "HowTo", "name": "How to remove a password from a PDF", "totalTime": "PT1M", "tool": [{"@type": "HowToTool", "name": "GetPDF (browser-based)"}], "step": [{"@type": "HowToStep", "name": "Add the file", "text": "Drag the protected PDF onto the drop area, or click to browse. Multiple files can be queued at once."}, {"@type": "HowToStep", "name": "Enter the password", "text": "If the document requires a password to open, type it into the field that appears. Files with only owner restrictions are unlocked without a password."}, {"@type": "HowToStep", "name": "Download the unlocked copy", "text": "Download the decrypted PDF. Text, fonts, images and layout are unchanged."}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YRJQE0EMSY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YRJQE0EMSY');</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="/" aria-label="GetPDF home">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <defs><linearGradient id="bmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF7A59"/><stop offset="1" stop-color="#FFB86B"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+        <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#bmG)"/>
+        <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#bmG)" opacity=".55"/>
+        <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+      </svg>
+      <span>Get<span class="accent-text">PDF</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary"><a class="nav__link" href="/"><span>Unlock a PDF</span></a><a class="nav__link" href="/how-to-remove-pdf-password"><span>How it works</span></a><a class="nav__link" href="/privacy"><span>Privacy</span></a></nav>
+    <div class="nav__side">
+<!-- GA:SWITCHER start -->
+  <details class="switcher">
+    <summary class="switcher__btn" role="button" aria-label="Switch product">
+      <span>Products</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="switcher__menu">
+      <a class="switcher__item" href="https://getinterest.getapps.tech/">
+        <i class="switcher__dot" style="background:#3DDC97"></i>
+        <span><b>GetInterest</b><span>EMI, FD, RD and SIP maths with live bank rates across India, the US and the GCC.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getpdf.getapps.tech/">
+        <i class="switcher__dot" style="background:#FF7A59"></i>
+        <span><b>GetPDF</b><span>Strip the password off a protected PDF, entirely inside your browser.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getjson.getapps.tech/">
+        <i class="switcher__dot" style="background:#22D3EE"></i>
+        <span><b>GetJSON</b><span>Publish a JSON endpoint in seconds. No signup, no server, no config.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getapps.tech/products">
+        <i class="switcher__dot" style="background:#6D5EF8"></i>
+        <span><b>All GetApps</b><span>The full catalogue of business apps on one account.</span></span>
+      </a>
+    </div>
+  </details>
+<!-- GA:SWITCHER end -->
+      <button class="icon-btn theme-btn" type="button" aria-label="Switch colour theme">
+        <svg class="sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><i></i><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer"><a href="/">Unlock a PDF</a><a href="/how-to-remove-pdf-password">How it works</a><a href="/privacy">Privacy</a><a href="https://getinterest.getapps.tech/">GetInterest</a><a href="https://getjson.getapps.tech/">GetJSON</a></div>
+
+<main id="main">
+
+<section class="gp-hero">
+  <div class="wrap">
+    <span class="eyebrow" data-reveal style="justify-content:center">Runs entirely in your browser</span>
+    <h1 data-reveal data-delay=".05">Take the password <span class="accent-text">off a PDF</span>.</h1>
+    <p class="lede" data-reveal data-delay=".1">Drop in a protected file, type the password you already know, and get back a clean, unrestricted PDF — with the text, fonts and layout completely untouched. Nothing is uploaded, because there is no server to upload it to.</p>
+    <div class="gp-hero__meta" data-reveal data-delay=".15">
+      <span class="chip"><b>0 bytes</b> leave your device</span>
+      <span class="chip"><b>No</b> sign-up</span>
+      <span class="chip"><b>No</b> quality loss</span>
+      <span class="chip"><b>Batch</b> unlock</span>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" style="padding-top:8px">
+  <div class="wrap wrap--narrow">
+    <div data-pdf-app>
+      <div class="panel panel--pad" style="text-align:center;color:var(--muted)"><p>Loading the PDF engine…</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="results-native"></div></div>
+GA:AD:OFF -->
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="sec-head sec-head--center" data-reveal>
+      <span class="eyebrow">Why in-browser matters</span>
+      <h2>Most &ldquo;free PDF unlockers&rdquo; want your file</h2>
+      <p>They upload it to a server, process it there, and ask you to trust a privacy policy. For a bank statement, a payslip or a contract, that is a genuinely bad trade. This one is built the other way round.</p>
+    </div>
+    <div class="trust">
+      <div class="trust__item" data-reveal>
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3.2v5.2c0 4.5-3.1 8.3-7.5 9.4-4.4-1.1-7.5-4.9-7.5-9.4V6.2z"/><path d="M9.2 12.2l2 2 3.6-3.9"/></svg></i>
+        <b>The file never moves</b>
+        <p>qpdf is compiled to WebAssembly and shipped to your browser as a 1.3 MB file. Decryption happens in a worker thread inside your tab. There is no upload endpoint in the code — check the network panel yourself.</p>
+      </div>
+      <div class="trust__item" data-reveal data-delay=".05">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></i>
+        <b>Nothing is re-rendered</b>
+        <p>Tools that convert your pages to images to strip protection destroy selectable text and balloon the file size. qpdf decrypts the real objects and rewrites the structure, so what comes out is what went in, minus the lock.</p>
+      </div>
+      <div class="trust__item" data-reveal data-delay=".1">
+        <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a7 7 0 0 1 14 0c0 5.6-7 10-7 10z"/><circle cx="12" cy="11" r="2.4"/></svg></i>
+        <b>It works offline</b>
+        <p>Once the page has loaded you can turn off your connection and keep unlocking files. That is the clearest possible demonstration that nothing is being sent anywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><span class="eyebrow">Three steps</span><h2>How to remove a PDF password</h2></div>
+    <div class="steps">
+      <div class="step" data-reveal><b>Drop the file in</b><p>Drag a protected PDF onto the box above, or click to browse. Several files at once is fine — they queue up and are handled one after another.</p></div>
+      <div class="step" data-reveal data-delay=".05"><b>Type the password</b><p>If the document needs one to open, a field appears. If it only carries printing or copying restrictions, GetPDF spots that and removes them without asking for anything.</p></div>
+      <div class="step" data-reveal data-delay=".1"><b>Download the clean copy</b><p>You get back <code>yourfile-unlocked.pdf</code> — same pages, same text, same fonts, no password prompt and no permission flags.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="content-mid"></div></div>
+GA:AD:OFF -->
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="prose" data-reveal>
+      <span class="eyebrow">Background</span>
+      <h2>What PDF encryption actually is</h2>
+      <p>A protected PDF is not a zip file with a password on the outside. The encryption is part of the document format: an <code>/Encrypt</code> dictionary in the file's trailer describes the algorithm and key length, and the content streams and strings inside the file are individually encrypted against a key derived from your password.</p>
+      <div class="callout"><b>Two different locks.</b> A <b>user password</b> stops the file opening at all. An <b>owner password</b> lets anyone read it but sets permission flags — no printing, no copying, no editing. Because the flags are only advisory, a compliant reader chooses to honour them; the content itself is encrypted with a key any reader can already derive. That is why owner restrictions can be removed without knowing the password and a user password genuinely cannot.</div>
+      <h3>What GetPDF does, step by step</h3>
+      <ul>
+        <li>Reads the first kilobyte to confirm the file really is a PDF.</li>
+        <li>Asks qpdf whether the document is encrypted but openable without a password — the owner-restrictions case.</li>
+        <li>If not, tries to open it with no password at all. Success means the file was never protected.</li>
+        <li>If that fails and an <code>/Encrypt</code> dictionary is present, it asks you for the password and passes it to qpdf.</li>
+        <li>On success qpdf writes a decrypted copy, which is handed to you as a download and then dropped from memory.</li>
+      </ul>
+      <p>Read the longer write-up in <a href="/how-to-remove-pdf-password">how it works</a>, including what to do when you do not have the password at all.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section section--tight">
+  <div class="wrap wrap--narrow">
+    <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions people actually ask</h2></div>
+    <div class="faq">
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Is my PDF uploaded anywhere?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>No. GetPDF ships a copy of qpdf compiled to WebAssembly, and that engine runs inside your browser tab. Your file is read from disk into memory, decrypted there, and handed back as a download. Open your browser's network tab while you use it — after the page and the 1.3 MB engine have loaded, there are no further requests. You can also disconnect from the internet entirely and it will still work.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Do I need to know the password?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>For a document open password, yes — this is not a cracking tool and it will not guess or brute-force anything. If the PDF only carries owner restrictions (it opens fine but blocks printing, copying or editing), no password is needed and GetPDF removes those restrictions on its own.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">What is the difference between a user password and an owner password?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>A user password — sometimes called the document open password — is required to view the file at all. An owner password leaves the file readable but sets permission flags that block printing, copying text, extracting pages or annotating. A PDF can have either, both, or neither. GetPDF detects which case it is looking at and tells you.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Does the unlocked file lose any quality?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>None. qpdf decrypts the document's existing objects and rewrites the file structure — it does not re-render, rasterise or recompress anything. Text stays selectable, vectors stay sharp, fonts and images are the originals, and form fields, bookmarks and links survive. The output is byte-for-byte the same content without the encryption layer.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Can I unlock several files at once?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Yes. Drop as many as you like and they queue up. If they share a password, tick “Try this password on every locked file” once and the rest unlock without you retyping it.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Is it legal to remove a PDF password?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>It depends entirely on the document and where you are. Removing protection from a file you own, or one you have been given permission to use — your own bank statement, a payslip, a document your employer sent you — is normally fine. Stripping protection from someone else's copyrighted or confidential material is not. You are responsible for having the right to do what you do here.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Is there a file size limit?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>The engine works in your browser's memory, so very large files depend on your device. The interface caps uploads at 100 MB, which covers the overwhelming majority of statements, reports and scanned documents. A machine with plenty of RAM will handle the top of that range comfortably.</p></div></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="footer-banner"></div></div>
+GA:AD:OFF -->
+</main>
+
+<!-- GA:FOOTER start -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a class="brand" href="https://getapps.tech/" aria-label="GetApps home">
+          <svg class="brand__mark" width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs><linearGradient id="fmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6D5EF8"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+            <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+            <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#fmG)"/>
+            <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#fmG)" opacity=".55"/>
+            <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+          </svg>
+          <span>GetApps<span class="brand__tld">.tech</span></span>
+        </a>
+        <p class="foot__blurb">Small, fast, single-purpose tools that do one job properly — and share one account when you want them to.</p>
+      </div>
+      <div>
+        <h4>Free tools</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/">GetInterest — loan &amp; savings maths</a></li>
+          <li><a href="https://getpdf.getapps.tech/">GetPDF — unlock a PDF</a></li>
+          <li><a href="https://getjson.getapps.tech/">GetJSON — instant JSON endpoints</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/emi-calculator">EMI calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/fd-calculator">FD calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/sip-calculator">SIP calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/banks">Bank rate comparison</a></li>
+          <li><a href="https://getjson.getapps.tech/docs">GetJSON API docs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://getapps.tech/products">All products</a></li>
+          <li><a href="https://getapps.tech/about">About</a></li>
+          <li><a href="https://getapps.tech/support">Support</a></li>
+          <li><a href="mailto:help@getapps.tech">help@getapps.tech</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__base">
+      <span>© <span data-year>2026</span> GetApps. All rights reserved.</span>
+      <span style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="/privacy">Privacy &amp; data</a>
+        <a href="https://getapps.tech/support">Support</a>
+        <a href="#main">Back to top</a>
+      </span>
+    </div>
+  </div>
+</footer>
+<!-- GA:FOOTER end -->
+
+<div class="toasts" aria-live="polite"></div>
+<script src="/assets/js/core.js" defer></script>
+<script src="/assets/js/ads.js" defer></script>
+<script src="/assets/js/app.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-product="json">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GetJSON API Documentation — Create &amp; Read JSON Endpoints</title>
+<meta name="description" content="Full API reference for GetJSON: create, read, update and delete JSON endpoints over HTTPS. No API key for reads, open CORS, 256 KB per document.">
+<meta name="theme-color" content="#06070B">
+<link rel="canonical" href="https://getjson.getapps.tech/docs">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetJSON">
+<meta property="og:title" content="GetJSON API reference">
+<meta property="og:description" content="Full API reference for GetJSON: create, read, update and delete JSON endpoints over HTTPS. No API key for reads, open CORS, 256 KB per document.">
+<meta property="og:url" content="https://getjson.getapps.tech/docs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GetJSON API reference">
+<meta name="twitter:description" content="Full API reference for GetJSON: create, read, update and delete JSON endpoints over HTTPS. No API key for reads, open CORS, 256 KB per document.">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+<script>
+  document.documentElement.classList.add("js");
+  (function () {
+    try {
+      var s = localStorage.getItem("ga-theme");
+      if (!s) s = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", s);
+    } catch (e) {}
+  })();
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "GetJSON API reference", "description": "Create, read, update and delete short-lived public JSON endpoints.", "publisher": {"@type": "Organization", "name": "GetApps", "url": "https://getapps.tech/"}, "mainEntityOfPage": "https://getjson.getapps.tech/docs"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the base URL?", "acceptedAnswer": {"@type": "Answer", "text": "It is the Supabase edge function for this deployment, shown in the endpoint URL you get after publishing. It is configured in one place — assets/js/config.js — so if the API later moves behind a custom domain, existing snippets are the only thing that need updating."}}, {"@type": "Question", "name": "Are there authentication headers on a read?", "acceptedAnswer": {"@type": "Answer", "text": "None. A GET needs no key, no token and no apikey header. That is the whole point — a plain fetch or curl works, including from a browser, because CORS is wide open on reads."}}, {"@type": "Question", "name": "What happens when I request an expired endpoint?", "acceptedAnswer": {"@type": "Answer", "text": "404 with a JSON error body explaining that it may have expired. Expired rows are filtered on read and physically purged on a schedule, so an expired ID never returns stale data."}}, {"@type": "Question", "name": "Can I use it as a webhook receiver?", "acceptedAnswer": {"@type": "Answer", "text": "No. GetJSON stores documents you publish; it does not capture arbitrary inbound POSTs into a log. A POST creates a new endpoint, it does not append to one."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "GetJSON", "item": "https://getjson.getapps.tech/"}, {"@type": "ListItem", "position": 2, "name": "API docs", "item": "https://getjson.getapps.tech/docs"}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YRJQE0EMSY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YRJQE0EMSY');</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="/" aria-label="GetJSON home">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <defs><linearGradient id="bmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#22D3EE"/><stop offset="1" stop-color="#6D5EF8"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+        <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#bmG)"/>
+        <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#bmG)" opacity=".55"/>
+        <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+      </svg>
+      <span>Get<span class="accent-text">JSON</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary"><a class="nav__link" href="/"><span>Editor</span></a><a class="nav__link" href="/docs"><span>API docs</span></a><a class="nav__link" href="/dashboard"><span>My endpoints</span></a><a class="nav__link" href="/privacy"><span>Privacy</span></a></nav>
+    <div class="nav__side">
+<!-- GA:SWITCHER start -->
+  <details class="switcher">
+    <summary class="switcher__btn" role="button" aria-label="Switch product">
+      <span>Products</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="switcher__menu">
+      <a class="switcher__item" href="https://getinterest.getapps.tech/">
+        <i class="switcher__dot" style="background:#3DDC97"></i>
+        <span><b>GetInterest</b><span>EMI, FD, RD and SIP maths with live bank rates across India, the US and the GCC.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getpdf.getapps.tech/">
+        <i class="switcher__dot" style="background:#FF7A59"></i>
+        <span><b>GetPDF</b><span>Strip the password off a protected PDF, entirely inside your browser.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getjson.getapps.tech/">
+        <i class="switcher__dot" style="background:#22D3EE"></i>
+        <span><b>GetJSON</b><span>Publish a JSON endpoint in seconds. No signup, no server, no config.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getapps.tech/products">
+        <i class="switcher__dot" style="background:#6D5EF8"></i>
+        <span><b>All GetApps</b><span>The full catalogue of business apps on one account.</span></span>
+      </a>
+    </div>
+  </details>
+<!-- GA:SWITCHER end -->
+      <button class="icon-btn theme-btn" type="button" aria-label="Switch colour theme">
+        <svg class="sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><i></i><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer"><a href="/">Editor</a><a href="/docs">API docs</a><a href="/dashboard">My endpoints</a><a href="/privacy">Privacy</a><a href="https://getinterest.getapps.tech/">GetInterest</a><a href="https://getpdf.getapps.tech/">GetPDF</a></div>
+
+<main id="main">
+
+<nav class="wrap" aria-label="Breadcrumb" style="padding-top:calc(var(--nav-h) + 26px)">
+  <ol style="display:flex;gap:8px;font-size:.8rem;color:var(--faint);font-family:var(--mono)"><li><a href="/">GetJSON</a></li><li aria-hidden="true">/</li><li aria-current="page">API docs</li></ol>
+</nav>
+<section class="gj-hero" style="padding-top:22px">
+  <div class="wrap wrap--narrow">
+    <h1 data-reveal style="font-size:clamp(2.1rem,4.4vw,3.2rem)">API reference</h1>
+    <p class="lede" data-reveal data-delay=".05">Four endpoints, no SDK, no key for reads. Everything speaks JSON in and JSON out.</p>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="top-leaderboard"></div></div>
+GA:AD:OFF -->
+
+<section class="section section--tight">
+  <div class="wrap wrap--narrow">
+    <div class="prose" data-reveal>
+      <div class="ep"><span class="ep__m ep__m--get">GET</span><span>/json/:id</span><span class="ep__d">Read a document</span></div>
+      <div class="ep"><span class="ep__m ep__m--post">POST</span><span>/json</span><span class="ep__d">Create one</span></div>
+      <div class="ep"><span class="ep__m ep__m--put">PUT</span><span>/json/:id</span><span class="ep__d">Replace it</span></div>
+      <div class="ep"><span class="ep__m ep__m--del">DEL</span><span>/json/:id</span><span class="ep__d">Delete it</span></div>
+
+      <div class="callout"><b>Base URL.</b> The full endpoint URL is handed to you when you publish and looks like <code>https://&lt;project&gt;.supabase.co/functions/v1/json/&lt;id&gt;</code>. Every example below is relative to that <code>/json</code> path.</div>
+
+      <h2>Read</h2>
+      <p>No headers. No key. The response body is exactly the document you stored — not wrapped, not enveloped.</p>
+      <pre><code>curl -s https://&lt;base&gt;/json/k3f9zq2mrt</code></pre>
+      <p>Responses carry <code>Content-Type: application/json; charset=utf-8</code>, an <code>X-Expires-At</code> header with the deletion deadline, a short <code>Cache-Control</code> max-age, and <code>Access-Control-Allow-Origin: *</code> so browsers can call it directly.</p>
+      <ul>
+        <li><strong>200</strong> — the document.</li>
+        <li><strong>404</strong> — unknown or expired ID, with a JSON error body.</li>
+      </ul>
+
+      <h2>Create</h2>
+      <p>POST a body containing <code>data</code>, and optionally <code>ttlHours</code> and <code>name</code>.</p>
+      <pre><code>curl -s -X POST https://&lt;base&gt;/json \
+  -H "Content-Type: application/json" \
+  -d '{"data": {"hello": "world"}, "ttlHours": 24, "name": "demo"}'</code></pre>
+      <pre><code>{
+  "id": "k3f9zq2mrt",
+  "url": "https://&lt;base&gt;/json/k3f9zq2mrt",
+  "editToken": "9f2c…",
+  "expiresAt": "2026-09-03T10:22:41.000Z",
+  "ttlHours": 24,
+  "owned": false
+}</code></pre>
+      <p><code>ttlHours</code> is clamped to the ceiling that applies to you — 72 anonymous, 144 with a valid access token — by a database trigger, not just by the API. Ask for 999 and you get the ceiling, not an error.</p>
+      <p>The <code>editToken</code> is returned <strong>once</strong> and only its SHA-256 hash is stored. Lose it and an anonymous endpoint can no longer be changed; it will still expire on schedule.</p>
+
+      <h2>Update</h2>
+      <p>PUT replaces the whole document. Authorise with the edit token, or with a Supabase access token if you own the endpoint.</p>
+      <pre><code>curl -s -X PUT https://&lt;base&gt;/json/k3f9zq2mrt \
+  -H "Content-Type: application/json" \
+  -H "X-Edit-Token: 9f2c…" \
+  -d '{"data": {"hello": "again"}}'</code></pre>
+      <p>Include <code>ttlHours</code> to push the expiry out — still subject to the same ceiling, measured from now.</p>
+
+      <h2>Delete</h2>
+      <pre><code>curl -s -X DELETE https://&lt;base&gt;/json/k3f9zq2mrt \
+  -H "X-Edit-Token: 9f2c…"</code></pre>
+
+      <h2>Errors</h2>
+      <p>Every failure returns a JSON body of the shape <code>{ "error": "…", "code": "…" }</code> with a matching HTTP status.</p>
+      <ul>
+        <li><code>bad_request</code> — 400, the body was not valid JSON.</li>
+        <li><code>missing_data</code> — 400, no <code>data</code> field.</li>
+        <li><code>forbidden</code> — 403, wrong or missing edit token and not the owner.</li>
+        <li><code>not_found</code> — 404, unknown or expired ID.</li>
+        <li><code>too_large</code> — 413, over 256 KB.</li>
+        <li><code>method_not_allowed</code> — 405.</li>
+      </ul>
+
+      <h2>Limits, stated plainly</h2>
+      <ul>
+        <li><strong>256 KB</strong> per document, enforced both in the function and by a database constraint.</li>
+        <li><strong>3 days</strong> maximum lifetime anonymously, <strong>6 days</strong> signed in.</li>
+        <li><strong>Everything is public.</strong> There is no private mode. Anyone with the URL reads the document.</li>
+        <li><strong>Not for production.</strong> No uptime guarantee, no backups, no support contract. Use it to build, then move on.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="content-mid"></div></div>
+GA:AD:OFF -->
+
+
+<section class="section section--tight">
+  <div class="wrap wrap--narrow">
+    <div class="sec-head"><span class="eyebrow">FAQ</span><h2>API questions</h2></div>
+    <div class="faq">
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">What is the base URL?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>It is the Supabase edge function for this deployment, shown in the endpoint URL you get after publishing. It is configured in one place — assets/js/config.js — so if the API later moves behind a custom domain, existing snippets are the only thing that need updating.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Are there authentication headers on a read?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>None. A GET needs no key, no token and no apikey header. That is the whole point — a plain fetch or curl works, including from a browser, because CORS is wide open on reads.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">What happens when I request an expired endpoint?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>404 with a JSON error body explaining that it may have expired. Expired rows are filtered on read and physically purged on a schedule, so an expired ID never returns stale data.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Can I use it as a webhook receiver?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>No. GetJSON stores documents you publish; it does not capture arbitrary inbound POSTs into a log. A POST creates a new endpoint, it does not append to one.</p></div></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="linkgrid" data-reveal>
+      <a class="linkcard" href="/"><b>Back to the editor</b><span>Write, validate and publish in one screen.</span></a>
+      <a class="linkcard" href="/dashboard"><b>My endpoints</b><span>Everything you have created, with live expiry countdowns.</span></a>
+      <a class="linkcard" href="https://getpdf.getapps.tech/"><b>GetPDF</b><span>Strip the password off a protected PDF, in your browser.</span></a>
+      <a class="linkcard" href="https://getinterest.getapps.tech/"><b>GetInterest</b><span>Loan and savings maths with real bank rates.</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="footer-banner"></div></div>
+GA:AD:OFF -->
+</main>
+
+<!-- GA:FOOTER start -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a class="brand" href="https://getapps.tech/" aria-label="GetApps home">
+          <svg class="brand__mark" width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs><linearGradient id="fmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6D5EF8"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+            <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+            <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#fmG)"/>
+            <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#fmG)" opacity=".55"/>
+            <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+          </svg>
+          <span>GetApps<span class="brand__tld">.tech</span></span>
+        </a>
+        <p class="foot__blurb">Small, fast, single-purpose tools that do one job properly — and share one account when you want them to.</p>
+      </div>
+      <div>
+        <h4>Free tools</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/">GetInterest — loan &amp; savings maths</a></li>
+          <li><a href="https://getpdf.getapps.tech/">GetPDF — unlock a PDF</a></li>
+          <li><a href="https://getjson.getapps.tech/">GetJSON — instant JSON endpoints</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/emi-calculator">EMI calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/fd-calculator">FD calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/sip-calculator">SIP calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/banks">Bank rate comparison</a></li>
+          <li><a href="https://getjson.getapps.tech/docs">GetJSON API docs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://getapps.tech/products">All products</a></li>
+          <li><a href="https://getapps.tech/about">About</a></li>
+          <li><a href="https://getapps.tech/support">Support</a></li>
+          <li><a href="mailto:help@getapps.tech">help@getapps.tech</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__base">
+      <span>© <span data-year>2026</span> GetApps. All rights reserved.</span>
+      <span style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="/privacy">Privacy &amp; data</a>
+        <a href="https://getapps.tech/support">Support</a>
+        <a href="#main">Back to top</a>
+      </span>
+    </div>
+  </div>
+</footer>
+<!-- GA:FOOTER end -->
+
+<div class="toasts" aria-live="polite"></div>
+<script src="/assets/js/core.js" defer></script>
+<script src="/assets/js/ads.js" defer></script>
+<script src="/assets/js/config.js" defer></script>
+<script src="/assets/js/api.js" defer></script>
+
+</body>
+</html>

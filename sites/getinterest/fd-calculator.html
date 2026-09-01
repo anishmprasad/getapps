@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-product="interest">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FD Calculator — Fixed Deposit Maturity &amp; Bank Rates | GetInterest</title>
+<meta name="description" content="Free fixed deposit calculator. Set amount, rate, term and compounding for the exact maturity value, then compare FD and CD rates across 57 banks.">
+<meta name="theme-color" content="#06070B">
+<link rel="canonical" href="https://getinterest.getapps.tech/fd-calculator">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetInterest">
+<meta property="og:title" content="FD Calculator with bank-by-bank comparison">
+<meta property="og:description" content="Free fixed deposit calculator. Set amount, rate, term and compounding for the exact maturity value, then compare FD and CD rates across 57 banks.">
+<meta property="og:url" content="https://getinterest.getapps.tech/fd-calculator">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FD Calculator with bank-by-bank comparison">
+<meta name="twitter:description" content="Free fixed deposit calculator. Set amount, rate, term and compounding for the exact maturity value, then compare FD and CD rates across 57 banks.">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/app.css">
+<script>
+  document.documentElement.classList.add("js");
+  (function () {
+    try {
+      var s = localStorage.getItem("ga-theme");
+      if (!s) s = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", s);
+    } catch (e) {}
+  })();
+</script>
+<script type="application/ld+json">{"@context": "https://schema.org","@type": "WebApplication","name": "FD Calculator","url": "https://getinterest.getapps.tech/fd-calculator","description": "Free fixed deposit calculator. Set the amount, rate, term and compounding frequency to get the exact maturity value, then compare FD and CD rates across 57 banks in India, the US and the GCC.","applicationCategory": "FinanceApplication","operatingSystem": "Any modern browser","browserRequirements": "Requires JavaScript","offers": {"@type": "Offer","price": "0","priceCurrency": "USD"},"publisher": {"@type": "Organization","name": "GetApps","url": "https://getapps.tech/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org","@type": "FAQPage","mainEntity": [{"@type": "Question","name": "How is fixed deposit interest calculated?","acceptedAnswer": {"@type": "Answer","text": "By compounding: interest is added to the balance at set intervals and then itself earns interest. Maturity equals P × (1 + r/m)^(m×t), where m is the number of compounding periods a year. Indian banks conventionally compound quarterly, so m is 4."}},{"@type": "Question","name": "Does compounding frequency really change much?","acceptedAnswer": {"@type": "Answer","text": "Over short terms, barely. Over long ones, meaningfully. The same nominal rate compounded quarterly rather than annually adds a small amount each year that itself compounds, so the gap widens the longer the deposit runs. The calculator shows the simple-interest equivalent alongside, so you can see the premium in money rather than in theory."}},{"@type": "Question","name": "What is the difference between an FD, a CD and a term deposit?","acceptedAnswer": {"@type": "Answer","text": "Mostly vocabulary. A fixed deposit in India, a certificate of deposit in the United States and a term deposit in the GCC are the same product: money locked for a fixed period at an agreed rate. The important differences are in the details — US CDs are quoted as APY with compounding already included, while Indian and Gulf banks usually quote a nominal rate plus a compounding frequency."}},{"@type": "Question","name": "Is the interest taxed?","acceptedAnswer": {"@type": "Answer","text": "In most markets, yes, and the rules differ enough that you should check locally. In India, bank interest is taxable as income and TDS is deducted above a threshold, with a higher exemption for senior citizens. In the United States, CD interest is ordinary income reported on a 1099-INT. The GCC states generally do not levy personal income tax on deposit returns. This calculator shows gross returns — it does not deduct tax."}},{"@type": "Question","name": "What happens if I break the deposit early?","acceptedAnswer": {"@type": "Answer","text": "Almost every bank applies a penalty: typically it repays you at the rate that would have applied to the shorter period you actually held it, minus a penalty of around half a percentage point. That can wipe out a large share of the return on a deposit broken in its first year, so match the term to when you will genuinely need the money."}},{"@type": "Question","name": "Are my deposits insured?","acceptedAnswer": {"@type": "Answer","text": "Up to a limit that varies by country — the DICGC scheme in India, FDIC insurance in the United States, and national deposit protection schemes across the GCC. Limits apply per depositor per bank, so splitting a large sum across institutions is a real strategy. Check the current limit with your regulator; it changes."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "GetInterest","item": "https://getinterest.getapps.tech/"},{"@type": "ListItem","position": 2,"name": "FD calculator","item": "https://getinterest.getapps.tech/fd-calculator"}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YRJQE0EMSY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-YRJQE0EMSY');</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="/" aria-label="GetInterest home">
+      <svg class="brand__mark" width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <defs><linearGradient id="bmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#3DDC97"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+        <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#bmG)"/>
+        <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#bmG)" opacity=".55"/>
+        <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#bmG)" stroke-width="2"/>
+      </svg>
+      <span>Get<span class="accent-text">Interest</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a class="nav__link" href="/"><span>Calculators</span></a><a class="nav__link" href="/emi-calculator"><span>EMI</span></a><a class="nav__link" href="/fd-calculator"><span>FD</span></a><a class="nav__link" href="/sip-calculator"><span>SIP</span></a><a class="nav__link" href="/banks"><span>Bank rates</span></a>
+    </nav>
+    <div class="nav__side">
+<!-- GA:SWITCHER start -->
+  <details class="switcher">
+    <summary class="switcher__btn" role="button" aria-label="Switch product">
+      <span>Products</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="switcher__menu">
+      <a class="switcher__item" href="https://getinterest.getapps.tech/">
+        <i class="switcher__dot" style="background:#3DDC97"></i>
+        <span><b>GetInterest</b><span>EMI, FD, RD and SIP maths with live bank rates across India, the US and the GCC.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getpdf.getapps.tech/">
+        <i class="switcher__dot" style="background:#FF7A59"></i>
+        <span><b>GetPDF</b><span>Strip the password off a protected PDF, entirely inside your browser.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getjson.getapps.tech/">
+        <i class="switcher__dot" style="background:#22D3EE"></i>
+        <span><b>GetJSON</b><span>Publish a JSON endpoint in seconds. No signup, no server, no config.</span></span>
+      </a>
+      <a class="switcher__item" href="https://getapps.tech/products">
+        <i class="switcher__dot" style="background:#6D5EF8"></i>
+        <span><b>All GetApps</b><span>The full catalogue of business apps on one account.</span></span>
+      </a>
+    </div>
+  </details>
+<!-- GA:SWITCHER end -->
+      <button class="icon-btn theme-btn" type="button" aria-label="Switch colour theme">
+        <svg class="sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><i></i><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <a href="/">Calculators</a><a href="/emi-calculator">EMI</a><a href="/fd-calculator">FD</a><a href="/sip-calculator">SIP</a><a href="/banks">Bank rates</a>
+  <a href="https://getpdf.getapps.tech/">GetPDF</a>
+  <a href="https://getjson.getapps.tech/">GetJSON</a>
+</div>
+
+<main id="main">
+
+<nav class="wrap" aria-label="Breadcrumb" style="padding-top:calc(var(--nav-h) + 26px)">
+  <ol style="display:flex;gap:8px;font-size:.8rem;color:var(--faint);font-family:var(--mono)">
+    <li><a href="/">GetInterest</a></li><li aria-hidden="true">/</li><li aria-current="page">FD calculator</li>
+  </ol>
+</nav>
+
+<section class="gi-hero" style="padding-top:22px">
+  <div class="wrap">
+    <h1 data-reveal>Fixed deposit calculator, and <span class="accent-text">who pays the most</span></h1>
+    <p class="lede" data-reveal data-delay=".05">Get the exact maturity value for any amount, rate, term and compounding frequency — then see which bank in your country would have returned the most on the same deposit.</p>
+    <div class="gi-hero__meta" data-reveal data-delay=".1">
+      <span class="chip"><b>Any</b> compounding frequency</span><span class="chip"><b>Simple vs compound</b> shown</span><span class="chip"><b>Bank</b> rate table</span><span class="chip"><b>8</b> countries</span>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="top-leaderboard"></div></div>
+GA:AD:OFF -->
+
+
+<section class="section section--tight" id="calculator">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="eyebrow">Calculator</span>
+      <h2>Deposit calculator</h2>
+      <p>Fixed deposit, recurring deposit and a straight simple-versus-compound comparison. Switch country to change the currency and the bank list.</p>
+    </div>
+    <div data-calc-app data-default-calc="fd" data-calcs="fd,rd,simple">
+      <div class="panel panel--pad" style="text-align:center;color:var(--muted)">
+        <p>Loading the calculator…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap"><div class="prose" data-reveal>
+<span class="eyebrow">Guide</span>
+<h2>What a deposit really returns</h2>
+<p>A fixed deposit is the simplest financial product there is: you hand over a sum, you cannot touch it for an agreed period, and you get it back with interest. The only variables are the rate, the term and how often interest is compounded — but those three interact in ways that a headline rate hides.</p>
+<div class="formula">Maturity = <em>P</em> × (1 + <em>r</em> ÷ <em>m</em>)<sup>m × t</sup></div>
+<ul>
+  <li><strong>P</strong> — the amount deposited.</li>
+  <li><strong>r</strong> — the annual nominal rate as a decimal.</li>
+  <li><strong>m</strong> — compounding periods per year: 4 for quarterly, 12 for monthly.</li>
+  <li><strong>t</strong> — the term in years.</li>
+</ul>
+
+<h3>Nominal rate versus effective yield</h3>
+<p>7% compounded quarterly is not 7% a year — it is closer to 7.19% once the compounding is accounted for. That effective figure is what a US bank would advertise as APY, which is why comparing a US CD's APY against an Indian bank's nominal rate is not a fair fight until you convert one of them. Set the compounding dropdown correctly and the calculator handles it.</p>
+
+<h3>Laddering instead of guessing</h3>
+<p>Locking everything into one long deposit is a bet that rates will not rise. Splitting the same money across several deposits maturing a year apart — a ladder — means something matures every year and can be reinvested at whatever the going rate then is. You give up a little yield for a lot of flexibility, and you stop needing to forecast.</p>
+
+<h3>A note on the Gulf</h3>
+<p>Four GCC currencies are pegged to the US dollar, and the Saudi riyal and UAE dirham move with it especially closely. In practice that means Gulf deposit rates track US policy rates with a lag. If you are deciding between a one-year and a three-year term deposit in the region, you are implicitly taking a view on the Federal Reserve.</p>
+</div></div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="content-mid"></div></div>
+GA:AD:OFF -->
+
+
+<section class="section section--tight">
+  <div class="wrap wrap--narrow">
+    <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions people actually ask</h2></div>
+    <div class="faq">
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">How is fixed deposit interest calculated?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>By compounding: interest is added to the balance at set intervals and then itself earns interest. Maturity equals P × (1 + r/m)^(m×t), where m is the number of compounding periods a year. Indian banks conventionally compound quarterly, so m is 4.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Does compounding frequency really change much?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Over short terms, barely. Over long ones, meaningfully. The same nominal rate compounded quarterly rather than annually adds a small amount each year that itself compounds, so the gap widens the longer the deposit runs. The calculator shows the simple-interest equivalent alongside, so you can see the premium in money rather than in theory.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">What is the difference between an FD, a CD and a term deposit?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Mostly vocabulary. A fixed deposit in India, a certificate of deposit in the United States and a term deposit in the GCC are the same product: money locked for a fixed period at an agreed rate. The important differences are in the details — US CDs are quoted as APY with compounding already included, while Indian and Gulf banks usually quote a nominal rate plus a compounding frequency.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Is the interest taxed?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>In most markets, yes, and the rules differ enough that you should check locally. In India, bank interest is taxable as income and TDS is deducted above a threshold, with a higher exemption for senior citizens. In the United States, CD interest is ordinary income reported on a 1099-INT. The GCC states generally do not levy personal income tax on deposit returns. This calculator shows gross returns — it does not deduct tax.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">What happens if I break the deposit early?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Almost every bank applies a penalty: typically it repays you at the rate that would have applied to the shorter period you actually held it, minus a penalty of around half a percentage point. That can wipe out a large share of the return on a deposit broken in its first year, so match the term to when you will genuinely need the money.</p></div></div>
+    </div>
+    <div class="faq__item">
+      <button class="faq__q" type="button" aria-expanded="false">Are my deposits insured?<i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Up to a limit that varies by country — the DICGC scheme in India, FDIC insurance in the United States, and national deposit protection schemes across the GCC. Limits apply per depositor per bank, so splitting a large sum across institutions is a real strategy. Check the current limit with your regulator; it changes.</p></div></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="sec-head" data-reveal><span class="eyebrow">Keep going</span><h2>Related calculators</h2></div>
+    <div class="linkgrid" data-reveal>
+      <a class="linkcard" href="/emi-calculator"><b>EMI calculator</b><span>The other side of the ledger — what a loan costs per month.</span></a><a class="linkcard" href="/sip-calculator"><b>SIP calculator</b><span>For money you are willing to put at market risk instead.</span></a><a class="linkcard" href="/banks"><b>All bank rates</b><span>Deposit and lending rates for every bank we track.</span></a><a class="linkcard" href="https://getjson.getapps.tech/"><b>GetJSON</b><span>Publish a JSON endpoint in seconds — no signup required.</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- GA:AD:OFF
+<div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="footer-banner"></div></div>
+GA:AD:OFF -->
+</main>
+
+<!-- GA:FOOTER start -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <a class="brand" href="https://getapps.tech/" aria-label="GetApps home">
+          <svg class="brand__mark" width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs><linearGradient id="fmG" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6D5EF8"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+            <rect x="1.5" y="1.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+            <rect x="17.5" y="1.5" width="13" height="13" rx="6.5" fill="url(#fmG)"/>
+            <rect x="1.5" y="17.5" width="13" height="13" rx="6.5" fill="url(#fmG)" opacity=".55"/>
+            <rect x="17.5" y="17.5" width="13" height="13" rx="4.2" stroke="url(#fmG)" stroke-width="2"/>
+          </svg>
+          <span>GetApps<span class="brand__tld">.tech</span></span>
+        </a>
+        <p class="foot__blurb">Small, fast, single-purpose tools that do one job properly — and share one account when you want them to.</p>
+      </div>
+      <div>
+        <h4>Free tools</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/">GetInterest — loan &amp; savings maths</a></li>
+          <li><a href="https://getpdf.getapps.tech/">GetPDF — unlock a PDF</a></li>
+          <li><a href="https://getjson.getapps.tech/">GetJSON — instant JSON endpoints</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Popular</h4>
+        <ul>
+          <li><a href="https://getinterest.getapps.tech/emi-calculator">EMI calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/fd-calculator">FD calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/sip-calculator">SIP calculator</a></li>
+          <li><a href="https://getinterest.getapps.tech/banks">Bank rate comparison</a></li>
+          <li><a href="https://getjson.getapps.tech/docs">GetJSON API docs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://getapps.tech/products">All products</a></li>
+          <li><a href="https://getapps.tech/about">About</a></li>
+          <li><a href="https://getapps.tech/support">Support</a></li>
+          <li><a href="mailto:help@getapps.tech">help@getapps.tech</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__base">
+      <span>© <span data-year>2026</span> GetApps. All rights reserved.</span>
+      <span style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="/privacy">Privacy &amp; data</a>
+        <a href="https://getapps.tech/support">Support</a>
+        <a href="#main">Back to top</a>
+      </span>
+    </div>
+  </div>
+</footer>
+<!-- GA:FOOTER end -->
+
+<div class="toasts" aria-live="polite"></div>
+<script src="/assets/js/core.js" defer></script>
+<script src="/assets/js/ads.js" defer></script>
+<script src="/assets/data/banks.js" defer></script>
+<script src="/assets/js/app.js" defer></script>
+
+</body>
+</html>

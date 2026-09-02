@@ -1,5 +1,11 @@
 # GetJSON — Supabase backend
 
+> **Project `ccmcwzdvrhhfbdqljtxn` is created and the site is already pointed at it**
+> (`sites/getjson/assets/js/config.js`). As of the last check the project has
+> **no `bins` table, no `json` edge function, and Google auth disabled** — so the
+> site probes the API on load, finds nothing, and falls back to demo mode with a
+> banner that says so. Steps 2, 3 and 4 below are what remain.
+
 Everything GetJSON needs on the server side: one table, one edge function.
 Until this is deployed the site runs in **demo mode** — the editor, validation,
 preview, expiry logic and code snippets all work, endpoints are stored in the
@@ -9,9 +15,9 @@ visitor's own browser, and a banner says so.
 
 ## 1. Create the project
 
-1. Create a new project at <https://supabase.com/dashboard>.
-2. Note the **Project URL** (`https://<ref>.supabase.co`) and the **anon public key**
-   from *Project Settings → API*.
+Already done — project ref `ccmcwzdvrhhfbdqljtxn`, URL
+`https://ccmcwzdvrhhfbdqljtxn.supabase.co`. The anon public key is in
+`sites/getjson/assets/js/config.js`.
 
 > The anon key is meant to be public — it ships in client code and is useless
 > without the RLS policies below. The **service_role** key is not: it bypasses
@@ -42,12 +48,12 @@ is about storage hygiene, not correctness.
 ## 3. Deploy the edge function
 
 ```bash
-supabase link --project-ref <your-ref>
+supabase link --project-ref ccmcwzdvrhhfbdqljtxn
 supabase functions deploy json --no-verify-jwt
 ```
 
 `--no-verify-jwt` is **required**. It is what lets an unauthenticated
-`curl https://<ref>.supabase.co/functions/v1/json/<id>` work with no headers at
+`curl https://ccmcwzdvrhhfbdqljtxn.supabase.co/functions/v1/json/<id>` work with no headers at
 all — the whole point of the product. Authorisation is handled inside the
 function instead:
 
@@ -64,7 +70,7 @@ by the platform — you do not need to set them.
 Cloud console and set the authorised redirect URI to:
 
 ```
-https://<ref>.supabase.co/auth/v1/callback
+https://ccmcwzdvrhhfbdqljtxn.supabase.co/auth/v1/callback
 ```
 
 Then add the site to *Authentication → URL Configuration*:
@@ -76,29 +82,24 @@ Then add the site to *Authentication → URL Configuration*:
 Sign-in is optional throughout — it only raises the retention ceiling from 3
 days to 6 and gives the user a cross-device list.
 
-## 5. Point the site at it
+## 5. Point the site at it — done
 
-Edit `sites/getjson/assets/js/config.js`:
+`sites/getjson/assets/js/config.js` already holds the project URL and anon key.
 
-```js
-window.GJ_CONFIG = {
-  supabaseUrl: "https://<ref>.supabase.co",
-  supabaseAnonKey: "<anon key>",
-  apiBase: "",          // derived from supabaseUrl unless you override it
-  anonMaxHours: 72,
-  userMaxHours: 144,
-  maxBytes: 262144
-};
-```
+The app calls `GET {apiBase}` once on load. While that returns 404 the site runs
+in demo mode and says why; the moment the function is deployed the probe succeeds
+and the banner disappears. No config change is needed after deploying.
 
-Deploy, reload, and the demo banner disappears.
+**Enable Google sign-in (step 4) as well** — it is currently off, with only email
+enabled, so the sign-in button stays hidden until then. Everything else works
+without it; signing in only raises retention from 3 days to 6.
 
 ---
 
 ## Verifying it works
 
 ```bash
-BASE=https://<ref>.supabase.co/functions/v1/json
+BASE=https://ccmcwzdvrhhfbdqljtxn.supabase.co/functions/v1/json
 
 # create
 curl -s -X POST $BASE -H 'Content-Type: application/json' \

@@ -16,6 +16,7 @@
 
   var editor, out, tree, statusEl, ttlSel, nameInput, publishBtn, ttlNote;
   var signedIn = false;
+  var currentUser = null;
   var lastResult = null;
   var tickTimer = null;
 
@@ -316,24 +317,45 @@
 
     /* Auth state drives the TTL ceiling and the sign-in button. */
     GJ.auth.onChange(function (user) {
+      currentUser = user;
       signedIn = !!user;
       updateTtlOptions();
       $$("[data-auth-slot]").forEach(function (slot) { renderAuth(slot, user); });
     });
 
-    if (!GJ.api.live) {
-      var banner = document.createElement("div");
-      banner.className = "demobanner";
-      banner.innerHTML = "<b>Demo mode.</b> No Supabase project is connected to this deployment yet, so endpoints are stored in this browser only. " +
-        'Everything else works exactly as it will in production — see <a href="/docs">the API docs</a>.';
-      app.insertBefore(banner, app.firstChild);
-    }
+    /* One health check decides whether this is a live backend or demo mode. */
+    GJ.api.probe().then(function (status) {
+      if (status !== "live") showBanner(app, status);
+      $$("[data-auth-slot]").forEach(function (slot) { renderAuth(slot, currentUser); });
+    });
   });
+
+  /* ------------------------- backend banner ------------------------- */
+  var BANNERS = {
+    unconfigured:
+      "<b>Demo mode.</b> No Supabase project is connected to this deployment yet, so endpoints are " +
+      "stored in this browser only.",
+    undeployed:
+      "<b>Demo mode.</b> The Supabase project is connected, but the <code>json</code> edge function " +
+      "and database schema are not deployed yet, so endpoints are stored in this browser only.",
+    unreachable:
+      "<b>Demo mode.</b> The backend is not responding right now, so endpoints are being stored in " +
+      "this browser only. Published links will not resolve for anyone else until it is back."
+  };
+
+  function showBanner(app, status) {
+    if ($(".demobanner", app)) return;
+    var banner = document.createElement("div");
+    banner.className = "demobanner";
+    banner.innerHTML = (BANNERS[status] || BANNERS.unconfigured) +
+      ' Everything else behaves exactly as it will in production — see <a href="/docs">the API docs</a>.';
+    app.insertBefore(banner, app.firstChild);
+  }
 
   /* ------------------------- auth button ---------------------------- */
   function renderAuth(slot, user) {
     if (!GJ.auth.available()) {
-      slot.innerHTML = '<span class="chip">Accounts arrive with the backend</span>';
+      slot.innerHTML = '<span class="chip">Sign-in arrives with the backend</span>';
       return;
     }
     if (user) {

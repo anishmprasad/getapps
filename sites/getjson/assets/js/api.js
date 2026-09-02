@@ -13,6 +13,28 @@
   var LOCAL_KEY = "gj-bins";      // endpoints created on this device
   var DEMO_KEY = "gj-demo-store"; // demo-mode payloads
 
+  /* Keys can be configured while the edge function is not deployed yet, and a
+     healthy backend can go down. `degraded` is set by the health probe below;
+     everything routes through useDemo() so one flag covers every call path. */
+  var degraded = false;
+  var probePromise = null;
+
+  function useDemo() { return !LIVE || degraded; }
+
+  /* GET on the function root returns its service descriptor when deployed.
+     Anything else (404 NOT_FOUND, network error) means "not available yet". */
+  function probe() {
+    if (!LIVE) return Promise.resolve("unconfigured");
+    if (probePromise) return probePromise;
+    probePromise = fetch(BASE, { method: "GET" })
+      .then(function (r) {
+        degraded = !r.ok;
+        return r.ok ? "live" : "undeployed";
+      })
+      .catch(function () { degraded = true; return "unreachable"; });
+    return probePromise;
+  }
+
   /* ---------------- device-local record of what you created ---------- */
   function readLocal() {
     try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || "[]"); } catch (e) { return []; }
@@ -80,7 +102,7 @@
   }
 
   var auth = {
-    available: function () { return LIVE; },
+    available: function () { return LIVE && !degraded; },
     user: async function () {
       var c = await supa();
       if (!c) return null;
@@ -122,18 +144,21 @@
   }
 
   var api = {
-    live: LIVE,
+    configured: LIVE,
     base: BASE,
+    probe: probe,
+    isDemo: useDemo,
     maxBytes: CFG.maxBytes || 262144,
 
-    urlFor: function (id) { return LIVE ? BASE + "/" + id : location.origin + "/demo/" + id; },
+    urlFor: function (id) { return useDemo() ? location.origin + "/demo/" + id : BASE + "/" + id; },
 
     maxHours: function (signedIn) {
       return signedIn ? (CFG.userMaxHours || 144) : (CFG.anonMaxHours || 72);
     },
 
     create: async function (data, ttlHours, name) {
-      if (!LIVE) {
+      await probe();
+      if (useDemo()) {
         var d = demo.create(data, ttlHours, name);
         remember({ id: d.id, name: name || null, url: d.url, editToken: d.editToken,
                    expiresAt: d.expiresAt, createdAt: new Date().toISOString(), demo: true });
@@ -152,7 +177,7 @@
     },
 
     get: async function (id) {
-      if (!LIVE) return demo.get(id);
+      if (useDemo()) return demo.get(id);
       var res = await fetch(BASE + "/" + id, { headers: { Accept: "application/json" } });
       if (!res.ok) {
         var b = await res.json().catch(function () { return {}; });
@@ -162,7 +187,7 @@
     },
 
     update: async function (id, data, editToken, ttlHours) {
-      if (!LIVE) {
+      if (useDemo()) {
         var s = demo.read();
         if (!s[id]) throw new Error("not_found");
         s[id].data = data; demo.write(s);
@@ -179,7 +204,7 @@
     },
 
     remove: async function (id, editToken) {
-      if (!LIVE) { demo.remove(id); forget(id); return { deleted: true }; }
+      if (useDemo()) { demo.remove(id); forget(id); return { deleted: true }; }
       var res = await fetch(BASE + "/" + id, {
         method: "DELETE",
         headers: Object.assign({ "X-Edit-Token": editToken || "" }, await authHeaders())

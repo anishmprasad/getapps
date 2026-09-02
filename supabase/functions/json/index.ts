@@ -6,10 +6,11 @@
 //   PUT    /functions/v1/json/:id      replace the stored JSON
 //   DELETE /functions/v1/json/:id      delete it
 //
-// Deploy WITHOUT JWT verification so that a plain `curl` or `fetch` with
-// no headers can read a bin:
+// Deploys WITHOUT JWT verification so that a plain `curl` or `fetch` with
+// no headers can read a bin. That setting lives in supabase/config.toml
+// ([functions.json] verify_jwt = false), so it survives every deploy:
 //
-//   supabase functions deploy json --no-verify-jwt
+//   supabase functions deploy json
 //
 // Authorisation is handled here instead:
 //   * reads are public by design
@@ -26,6 +27,12 @@ const MAX_BYTES = 256 * 1024;       // 256 KB per document
 const ANON_MAX_HOURS = 72;          // 3 days
 const USER_MAX_HOURS = 144;         // 6 days
 const ID_ALPHABET = "abcdefghijkmnpqrstuvwxyz23456789"; // no l/o/0/1
+
+// The public origin to hand back in a created bin's `url`. Deliberately NOT
+// derived from the request: behind Supabase's proxy the inbound URL is plain
+// http, so `new URL(req.url).origin` would publish an http:// endpoint to
+// every creator — in the UI, in the copy button, and in the curl snippet.
+const PUBLIC_ORIGIN = SUPABASE_URL.replace(/\/+$/, "");
 
 const admin = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
@@ -179,7 +186,7 @@ Deno.serve(async (req) => {
 
       return json({
         id: inserted.id,
-        url: `${url.origin}/functions/v1/json/${inserted.id}`,
+        url: `${PUBLIC_ORIGIN}/functions/v1/json/${inserted.id}`,
         editToken: secret,
         expiresAt: inserted.expires_at,
         createdAt: inserted.created_at,

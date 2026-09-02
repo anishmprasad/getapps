@@ -71,3 +71,7 @@ node_modules/
 # macOS
 .DS_Store
 **/.DS_Store
+
+# supabase CLI scratch (link state, version checks) — not project config.
+# supabase/config.toml IS tracked; this directory is per-machine.
+supabase/.temp/

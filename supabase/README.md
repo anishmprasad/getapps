@@ -1,10 +1,14 @@
 # GetJSON — Supabase backend
 
-> **Project `ccmcwzdvrhhfbdqljtxn` is created and the site is already pointed at it**
-> (`sites/getjson/assets/js/config.js`). As of the last check the project has
-> **no `bins` table, no `json` edge function, and Google auth disabled** — so the
-> site probes the API on load, finds nothing, and falls back to demo mode with a
-> banner that says so. Steps 2, 3 and 4 below are what remain.
+> **Status: the backend is live.** Project `ccmcwzdvrhhfbdqljtxn` (org
+> `getapps.tech`) has the schema applied, the `json` edge function deployed, and
+> the hourly purge scheduled. The site's probe succeeds, so demo mode is off.
+>
+> **Only step 4 remains — Google sign-in is still disabled** (`"google":false` in
+> `/auth/v1/settings`), because it is two dashboard toggles nobody can do from a
+> CLI. Until then `auth.available()` is false and the page shows the
+> "Sign-in arrives with the backend" chip instead of Google's button. Everything
+> else works signed out.
 
 Everything GetJSON needs on the server side: one table, one edge function.
 Until this is deployed the site runs in **demo mode** — the editor, validation,
@@ -24,9 +28,11 @@ Already done — project ref `ccmcwzdvrhhfbdqljtxn`, URL
 > RLS entirely. It belongs only in edge function environment variables, which
 > Supabase injects automatically. Never put it in `config.js`.
 
-## 2. Apply the schema
+## 2. Apply the schema — done
 
-Paste `schema.sql` into *SQL Editor → New query* and run it. It creates:
+Applied with `supabase db query --linked -f supabase/schema.sql` (the Management
+API path, so it needs no database password). Pasting `schema.sql` into
+*SQL Editor → New query* does the same thing. It creates:
 
 | Object | Purpose |
 | --- | --- |
@@ -36,7 +42,8 @@ Paste `schema.sql` into *SQL Editor → New query* and run it. It creates:
 | `purge_expired_bins()` | Physically deletes expired rows. |
 | RLS policies | A signed-in user can select, update and delete only their own unexpired rows. There is deliberately **no insert policy** — every write goes through the edge function. |
 
-Then schedule the purge. Enable `pg_cron` under *Database → Extensions*, and run:
+The purge is scheduled — `pg_cron` is enabled and job 1 runs
+`select public.purge_expired_bins()` at `0 * * * *`. On a fresh project:
 
 ```sql
 select cron.schedule('purge-expired-bins', '0 * * * *', $$select public.purge_expired_bins()$$);
@@ -45,14 +52,23 @@ select cron.schedule('purge-expired-bins', '0 * * * *', $$select public.purge_ex
 Expired rows are filtered out of reads immediately regardless, so the cron job
 is about storage hygiene, not correctness.
 
-## 3. Deploy the edge function
+`supabase db advisors --linked --type security` reports no issues. Getting there
+took two fixes now folded into `schema.sql`: `bins_enforce_ttl` had a mutable
+`search_path`, and `purge_expired_bins` — `security definer`, like
+`bump_bin_views` — was callable by `anon` through `/rest/v1/rpc/`. Re-run the
+advisors after any schema change.
+
+## 3. Deploy the edge function — done
 
 ```bash
-supabase link --project-ref ccmcwzdvrhhfbdqljtxn
-supabase functions deploy json --no-verify-jwt
+supabase functions deploy json --project-ref ccmcwzdvrhhfbdqljtxn
 ```
 
-`--no-verify-jwt` is **required**. It is what lets an unauthenticated
+No `--no-verify-jwt` flag any more: `supabase/config.toml` carries
+`[functions.json] verify_jwt = false`, so the setting survives every deploy
+instead of depending on whoever runs it remembering a flag.
+
+JWT verification being off is **required**. It is what lets an unauthenticated
 `curl https://ccmcwzdvrhhfbdqljtxn.supabase.co/functions/v1/json/<id>` work with no headers at
 all — the whole point of the product. Authorisation is handled inside the
 function instead:
@@ -62,7 +78,10 @@ function instead:
   belonging to the row's owner.
 
 `SUPABASE_URL`, `SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are injected
-by the platform — you do not need to set them.
+by the platform — you do not need to set them. `SUPABASE_URL` is also what the
+`url` in a create response is built from: deriving it from the request instead
+returns `http://`, because the inbound URL behind Supabase's proxy is plain
+HTTP, and that URL is what the UI shows and copies.
 
 ## 4. Enable Google sign-in
 
@@ -149,7 +168,7 @@ The app calls `GET {apiBase}` once on load. While that returns 404 the site runs
 in demo mode and says why; the moment the function is deployed the probe succeeds
 and the banner disappears. No config change is needed after deploying.
 
-**Enable Google sign-in (step 4) as well** — it is currently off, with only email
+**Enable Google sign-in (step 4) as well** — it is still off, with only email
 enabled, so the sign-in button stays hidden until then. Everything else works
 without it; signing in only raises retention from 3 days to 6.
 

@@ -41,6 +41,7 @@ create index if not exists bins_expires_idx on public.bins (expires_at);
 create or replace function public.bins_enforce_ttl()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 declare
   max_ttl interval;
@@ -87,6 +88,12 @@ begin
   return removed;
 end;
 $$;
+
+-- security definer, so keep it off the public API surface entirely. Without
+-- this, anyone holding the (public) anon key can POST /rest/v1/rpc/purge_expired_bins.
+-- It only ever deletes already-expired rows, but it is not a handle worth handing out.
+-- pg_cron runs as the owner and is unaffected by the revoke.
+revoke all on function public.purge_expired_bins() from public, anon, authenticated;
 
 -- Schedule it hourly. Enable pg_cron from Database → Extensions first.
 -- select cron.schedule('purge-expired-bins', '0 * * * *', $$select public.purge_expired_bins()$$);

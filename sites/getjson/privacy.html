@@ -120,7 +120,8 @@
       <p>Deleting an endpoint — from the dashboard, or with a DELETE request — removes the row straight away.</p>
 
       <h2>Signing in</h2>
-      <p>Sign-in is optional and uses Google through Supabase Auth. We receive your email address and a Google account identifier; we do not receive your password and never see it. Your session is stored in this browser. Signing out clears it; deleting your account removes every endpoint you own, because the rows cascade.</p>
+      <p>Sign-in is optional and uses Google. The sign-in button is rendered in this page by Google Identity Services, loaded from <code>accounts.google.com</code>, so the consent prompt comes from Google directly and you are never redirected elsewhere. Google returns a signed token identifying you, which our backend verifies against Google's public keys before creating a session.</p>
+      <p>We receive your email address and a Google account identifier. We never see your Google password. Your session is stored in this browser; signing out clears it. Deleting your account removes every endpoint you own, because the rows cascade. Loading Google's sign-in script means Google can see that you visited this page — if that matters to you, simply do not sign in: every feature except the six-day retention and the cross-device list works signed out.</p>
 
       <h2>What is in this browser</h2>
       <ul>

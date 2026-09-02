@@ -208,3 +208,9 @@
   .pubbar { flex-direction: column; align-items: stretch; }
   .pubbar .btn { width: 100%; }
 }
+
+/* Google Identity Services renders its own button here. Reserve its height so
+   the hero chip row does not jump when the script finishes loading. */
+.gbtn { min-height: 32px; display: flex; align-items: center; }
+.gbtn > div { color-scheme: light; }
+.signincard .gbtn { justify-content: flex-end; }

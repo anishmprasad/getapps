@@ -13,10 +13,16 @@
     var authSlot = $("[data-auth-slot]");
     var currentUser = null;
 
+    /* Same health check the editor runs: without it this page would hand out
+       live API URLs for endpoints that only exist in the local demo store. */
+    var ready = GJ.api.probe();
+
     GJ.auth.onChange(function (user) {
       currentUser = user;
-      if (authSlot && window.GJrenderAuth) GJrenderAuth(authSlot, user);
-      load();
+      ready.then(function () {
+        if (authSlot && window.GJrenderAuth) GJrenderAuth(authSlot, user);
+        load();
+      });
     });
 
     async function load() {
@@ -66,6 +72,14 @@
             }))
           : '<div class="empty">Publish something on <a href="/">the editor</a> and it will show up here.</div>'
       );
+
+      if (GJ.api.isDemo()) {
+        html = '<div class="demobanner"><b>Demo mode.</b> ' +
+          (GJ.api.configured
+            ? 'The backend is not deployed or not reachable yet, so these endpoints exist only in this browser.'
+            : 'No Supabase project is connected yet, so these endpoints exist only in this browser.') +
+          ' Their URLs will not resolve for anyone else.</div>' + html;
+      }
 
       host.innerHTML = html;
 

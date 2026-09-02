@@ -101,8 +101,109 @@
     return clientPromise;
   }
 
+  /* ------------------- Google Identity Services ---------------------
+     Sign-in runs in-page against OUR Google client, so the consent screen
+     shows our app name and origin — the user never sees a supabase.co URL,
+     and there is no redirect.
+
+     Google hands back a SIGNED ID token, which is passed to Supabase's
+     signInWithIdToken. Supabase verifies that signature against Google's
+     public keys before minting a session. That step is not ceremony: the
+     anon key is public, so without a verified token the browser could claim
+     to be any user it liked and `owner_id` on a bin would be forgeable.
+     "Direct" here means no redirect through Supabase — not trusting whatever
+     the client asserts.
+
+     Needs, on the Google side, this origin in "Authorised JavaScript origins";
+     on the Supabase side, the client id under Google > Authorised Client IDs.
+     The client SECRET is not part of this flow.
+  ------------------------------------------------------------------- */
+  var GIS_SRC = "https://accounts.google.com/gsi/client";
+  var gisPromise = null;
+  var rawNonce = null;
+  var gisReady = null;   // promise, once initialize() has been kicked off
+
+  function loadGis() {
+    if (gisPromise) return gisPromise;
+    gisPromise = new Promise(function (resolve, reject) {
+      if (window.google && window.google.accounts && window.google.accounts.id) return resolve(window.google);
+      var el = document.createElement("script");
+      el.src = GIS_SRC; el.async = true; el.defer = true;
+      el.onload = function () {
+        if (window.google && window.google.accounts && window.google.accounts.id) resolve(window.google);
+        else reject(new Error("Google Identity Services loaded but is unavailable"));
+      };
+      el.onerror = function () { reject(new Error("Google Identity Services could not be loaded")); };
+      document.head.appendChild(el);
+    });
+    return gisPromise;
+  }
+
+  /* Supabase compares sha256(rawNonce) with the nonce baked into the token,
+     so Google gets the hash and Supabase gets the original. */
+  async function makeNonce() {
+    var bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    var raw = Array.prototype.map.call(bytes, function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+    var digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+    var hashed = Array.prototype.map.call(new Uint8Array(digest), function (b) {
+      return b.toString(16).padStart(2, "0");
+    }).join("");
+    return { raw: raw, hashed: hashed };
+  }
+
+  var authListeners = [];
+  function emit(user) { authListeners.forEach(function (fn) { try { fn(user); } catch (e) {} }); }
+
+  async function onCredential(response) {
+    var c = await supa();
+    if (!c) return;
+    try {
+      var res = await c.auth.signInWithIdToken({
+        provider: "google",
+        token: response.credential,
+        nonce: rawNonce
+      });
+      if (res.error) throw res.error;
+      GA.toast("Signed in");
+      emit(res.data && res.data.user);
+    } catch (e) {
+      var msg = (e && e.message) || "Sign-in failed";
+      if (/provider|not enabled|unsupported/i.test(msg)) {
+        msg = "Google sign-in is not enabled on the Supabase project yet.";
+      }
+      GA.toast(msg, "err", 6000);
+      if (window.console) console.warn("[GetJSON] signInWithIdToken failed:", e);
+    }
+  }
+
+  /* Cached as a promise, not a boolean: two slots mounting at once would
+     otherwise both get past a `gisReady` flag and call initialize() twice,
+     which GIS warns about and which would leave a stale nonce behind. */
+  function initGis() {
+    if (gisReady) return gisReady;
+    if (!CFG.googleClientId) return Promise.resolve(false);
+    gisReady = Promise.all([loadGis(), makeNonce()]).then(function (r) {
+      var g = r[0], n = r[1];
+      rawNonce = n.raw;
+      g.accounts.id.initialize({
+        client_id: CFG.googleClientId,
+        callback: onCredential,
+        nonce: n.hashed,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+        use_fedcm_for_prompt: true
+      });
+      return true;
+    });
+    return gisReady;
+  }
+
   var auth = {
-    available: function () { return LIVE && !degraded; },
+    /* Sign-in needs a reachable backend (there is nothing useful to do signed
+       in without one) and a configured Google client. */
+    available: function () { return LIVE && !degraded && !!CFG.googleClientId; },
+
     user: async function () {
       var c = await supa();
       if (!c) return null;
@@ -115,20 +216,45 @@
       var r = await c.auth.getSession();
       return (r && r.data && r.data.session && r.data.session.access_token) || null;
     },
-    signInWithGoogle: async function (redirectTo) {
-      var c = await supa();
-      if (!c) { GA.toast("Sign-in is not configured on this deployment yet", "warn"); return; }
-      var res = await c.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: redirectTo || (location.origin + "/dashboard") }
-      });
-      if (res.error) GA.toast(res.error.message, "err");
+
+    /** Render Google's own button into `el`. Re-renders when the theme flips. */
+    mountGoogleButton: async function (el) {
+      if (!auth.available()) return false;
+      try {
+        var g = await loadGis();
+        await initGis();
+        var draw = function () {
+          el.innerHTML = "";
+          g.accounts.id.renderButton(el, {
+            theme: document.documentElement.getAttribute("data-theme") === "light" ? "outline" : "filled_black",
+            size: "medium", shape: "pill", text: "signin_with", logo_alignment: "left"
+          });
+        };
+        draw();
+        if (!el._gjThemeObserver) {
+          el._gjThemeObserver = new MutationObserver(draw);
+          el._gjThemeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+        }
+        return true;
+      } catch (e) {
+        if (window.console) console.warn("[GetJSON]", e.message);
+        return false;
+      }
     },
+
     signOut: async function () {
       var c = await supa();
       if (c) await c.auth.signOut();
+      try {
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+          window.google.accounts.id.disableAutoSelect();
+        }
+      } catch (e) {}
+      emit(null);
     },
+
     onChange: async function (fn) {
+      authListeners.push(fn);
       var c = await supa();
       if (!c) { fn(null); return; }
       var r = await c.auth.getUser();

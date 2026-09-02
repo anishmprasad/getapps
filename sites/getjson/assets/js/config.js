@@ -17,6 +17,14 @@ window.GJ_CONFIG = {
   supabaseAnonKey:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjbWN3emR2cmhoZmJkcWxqdHhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzMjc2NTUsImV4cCI6MjEwMzkwMzY1NX0.2fcv3QcAKWzZ_0Ij5bOtqN5nX_Rt2ftQ5mBUcxa7jxo",
 
+  // Google Identity Services client id. PUBLIC by design — it identifies the
+  // app to Google and is meant to sit in page source. Sign-in runs in-page
+  // against this client, so Google's consent screen shows our app name and
+  // origin rather than a supabase.co URL. The matching client SECRET is not
+  // used by this flow at all and must never appear here.
+  googleClientId:
+    "1016786399114-oifs16q4d7osmoo0qejp9qb917fisv6h.apps.googleusercontent.com",
+
   // Where the public API lives. Leave empty to derive it from supabaseUrl
   // as `${supabaseUrl}/functions/v1/json`. Override if you later put the
   // function behind a custom domain or a proxy.

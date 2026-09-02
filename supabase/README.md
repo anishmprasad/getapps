@@ -66,21 +66,80 @@ by the platform — you do not need to set them.
 
 ## 4. Enable Google sign-in
 
-*Authentication → Providers → Google*. Create an OAuth client in the Google
-Cloud console and set the authorised redirect URI to:
+The site does **not** use Supabase's OAuth redirect flow. That flow sends the
+user to `accounts.google.com` with Supabase as the client, so Google's consent
+screen reads *"to continue to ccmcwzdvrhhfbdqljtxn.supabase.co"* — which looks
+wrong on a consumer tool.
+
+Instead, Google Identity Services renders a button **in the page**, on our own
+origin and against our own client id. Google returns a signed ID token, which
+the app hands to `supabase.auth.signInWithIdToken`. Supabase verifies that
+signature against Google's public keys and mints the session.
+
+> That verification is load-bearing. The anon key is public, so if the browser
+> simply asserted "I am user X" and wrote rows with that `owner_id`, anyone
+> could claim anyone else's endpoints. Supabase checking Google's signature is
+> what makes `owner_id` trustworthy, and what lets the RLS policies mean
+> something. No redirect through Supabase is involved either way.
+
+### 4a. Google Cloud console
+
+OAuth 2.0 Client (Web application):
 
 ```
-https://ccmcwzdvrhhfbdqljtxn.supabase.co/auth/v1/callback
+Client ID: 1016786399114-oifs16q4d7osmoo0qejp9qb917fisv6h.apps.googleusercontent.com
 ```
 
-Then add the site to *Authentication → URL Configuration*:
+**Authorised JavaScript origins** — required for this flow, and the part that
+differs from a redirect setup. Add every origin the button renders on:
 
-- **Site URL**: `https://getjson.getapps.tech`
-- **Redirect URLs**: `https://getjson.getapps.tech/dashboard`, plus
-  `http://localhost:4323/dashboard` for local work.
+```
+https://getjson.getapps.tech
+http://localhost:4323
+```
 
-Sign-in is optional throughout — it only raises the retention ceiling from 3
-days to 6 and gives the user a cross-device list.
+**Authorised redirect URIs** — not used by this flow. Leave empty, or keep
+`https://ccmcwzdvrhhfbdqljtxn.supabase.co/auth/v1/callback` if you ever want the
+redirect flow as a fallback.
+
+Fill in the OAuth consent screen (app name, support email, `email` + `profile`
+scopes). The app name you put there is what users will read on the Google
+prompt, so make it "GetJSON" or "GetApps", not the project id.
+
+### 4b. Supabase dashboard
+
+*Authentication → Providers → Google*: toggle on and put the client id into
+**Authorised Client IDs** — that is the field `signInWithIdToken` checks.
+
+> **The client secret is not needed for this flow.** It only matters for the
+> redirect flow we are not using. If the dashboard insists on the field, paste
+> it there and nowhere else — never in `config.js` or this repo.
+
+*Authentication → URL Configuration* no longer matters for sign-in, since there
+is no redirect. Setting **Site URL** to `https://getjson.getapps.tech` is still
+worth doing for email templates.
+
+### 4c. Check it
+
+```bash
+curl -s -H "apikey: <anon key>" \
+  https://ccmcwzdvrhhfbdqljtxn.supabase.co/auth/v1/settings | grep -o '"google":[a-z]*'
+```
+
+`"google":true` means the provider is on. Reload GetJSON and Google's own button
+replaces the "Sign-in arrives with the backend" chip.
+
+Common failures:
+
+| Symptom | Cause |
+| --- | --- |
+| Button never appears, console says GIS could not load | A tracking blocker is blocking `accounts.google.com`. The UI falls back to a message saying so. |
+| `[GSI_LOGGER] The given origin is not allowed` | The origin is missing from **Authorised JavaScript origins** (4a). |
+| Toast: "Google sign-in is not enabled on the Supabase project yet" | Provider still off, or the client id is not in **Authorised Client IDs** (4b). |
+| `Passed nonce and nonce in id_token should either both exist or not` | Nonce mismatch — the app hashes it correctly, so this points at a stale cached `api.js`. Hard-reload. |
+
+Sign-in stays optional throughout — it only raises retention from 3 days to 6
+and gives a cross-device list. Everything else works signed out.
 
 ## 5. Point the site at it — done
 

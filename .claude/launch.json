@@ -1,8 +1,41 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "getinterest", "runtimeExecutable": "node", "runtimeArgs": ["tools/serve.mjs", "getinterest"], "port": 4321 },
-    { "name": "getpdf",      "runtimeExecutable": "node", "runtimeArgs": ["tools/serve.mjs", "getpdf"], "port": 4322 },
-    { "name": "getjson",     "runtimeExecutable": "node", "runtimeArgs": ["tools/serve.mjs", "getjson"], "port": 4323 }
+    {
+      "name": "main",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "main"
+      ],
+      "port": 4320
+    },
+    {
+      "name": "getinterest",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "getinterest"
+      ],
+      "port": 4321
+    },
+    {
+      "name": "getpdf",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "getpdf"
+      ],
+      "port": 4322
+    },
+    {
+      "name": "getjson",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "getjson"
+      ],
+      "port": 4323
+    }
   ]
 }

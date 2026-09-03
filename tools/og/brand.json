@@ -1,0 +1,377 @@
+{
+  "$comment": "Source of truth for every social / OG / icon asset. Edit here, then run: python3 tools/og/generate.py",
+  "sites": [
+    {
+      "key": "getapps",
+      "name": "GetApps",
+      "origin": "https://getapps.tech",
+      "domain": "getapps.tech",
+      "root": ".",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#6D5EF8",
+        "#22D3EE"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetApps",
+        "description": "A marketplace of production-ready business apps that share one account, one invoice and one data layer."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "eyebrow": "The platform",
+          "headline": "Sixteen business apps.\nOne platform.",
+          "sub": "One account, one invoice, one data layer — payments, support, email, automation and more.",
+          "chips": [
+            "One account",
+            "One invoice",
+            "Sixteen apps"
+          ],
+          "primary": true
+        },
+        {
+          "key": "products",
+          "file": "products.html",
+          "path": "/products",
+          "eyebrow": "Products",
+          "headline": "Every app in the\nGetApps catalogue.",
+          "sub": "Payments, bookkeeping, CRM, email, forms, helpdesk, chat, status pages, storage and more.",
+          "chips": [
+            "16 products",
+            "Shared data layer",
+            "Free tools"
+          ]
+        },
+        {
+          "key": "about",
+          "file": "about.html",
+          "path": "/about",
+          "eyebrow": "About",
+          "headline": "A platform,\nnot a bundle.",
+          "sub": "Our thesis, the story from 2020 to today, the values we enforce and the team behind GetApps.",
+          "chips": [
+            "Since 2020",
+            "Our thesis",
+            "The team"
+          ]
+        },
+        {
+          "key": "support",
+          "file": "support.html",
+          "path": "/support",
+          "eyebrow": "Support",
+          "headline": "Help from the people\nwho build it.",
+          "sub": "Live chat, email, docs, FAQs, platform status and response-time commitments.",
+          "chips": [
+            "Live chat",
+            "Docs & FAQs",
+            "Live status"
+          ]
+        },
+        {
+          "key": "v1-index",
+          "file": "v1/index.html",
+          "path": "/v1/index.html",
+          "reuse": true
+        },
+        {
+          "key": "v1-about",
+          "file": "v1/about.html",
+          "path": "/v1/about.html",
+          "reuse": true
+        },
+        {
+          "key": "v1-products",
+          "file": "v1/products.html",
+          "path": "/v1/products.html",
+          "reuse": true
+        },
+        {
+          "key": "v1-support",
+          "file": "v1/support.html",
+          "path": "/v1/support.html",
+          "reuse": true
+        },
+        {
+          "key": "v2-index",
+          "file": "v2/index.html",
+          "path": "/v2/index.html",
+          "reuse": true
+        },
+        {
+          "key": "v2-about",
+          "file": "v2/about.html",
+          "path": "/v2/about.html",
+          "reuse": true
+        },
+        {
+          "key": "v2-products",
+          "file": "v2/products.html",
+          "path": "/v2/products.html",
+          "reuse": true
+        },
+        {
+          "key": "v2-support",
+          "file": "v2/support.html",
+          "path": "/v2/support.html",
+          "reuse": true
+        },
+        {
+          "key": "v3-index",
+          "file": "v3/index.html",
+          "path": "/v3/index.html",
+          "reuse": true
+        },
+        {
+          "key": "v3-about",
+          "file": "v3/about.html",
+          "path": "/v3/about.html",
+          "reuse": true
+        },
+        {
+          "key": "v3-products",
+          "file": "v3/products.html",
+          "path": "/v3/products.html",
+          "reuse": true
+        },
+        {
+          "key": "v3-support",
+          "file": "v3/support.html",
+          "path": "/v3/support.html",
+          "reuse": true
+        }
+      ]
+    },
+    {
+      "key": "getpdf",
+      "name": "GetPDF",
+      "origin": "https://getpdf.getapps.tech",
+      "domain": "getpdf.getapps.tech",
+      "root": "sites/getpdf",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#FF7A59",
+        "#FFB86B"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetPDF",
+        "description": "Remove the password from a protected PDF entirely in your browser. Nothing is uploaded."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "eyebrow": "Free tool",
+          "headline": "Remove a PDF password\nwithout uploading it.",
+          "sub": "Runs entirely in your browser. Your file never leaves the device, and text and quality are untouched.",
+          "chips": [
+            "Nothing uploaded",
+            "No signup",
+            "Free"
+          ],
+          "primary": true
+        },
+        {
+          "key": "how-to-remove-pdf-password",
+          "file": "how-to-remove-pdf-password.html",
+          "path": "/how-to-remove-pdf-password",
+          "eyebrow": "Guide",
+          "headline": "User passwords vs\nowner restrictions.",
+          "sub": "Which PDF lock can be removed without the password, and how to unlock a file safely.",
+          "chips": [
+            "Explainer",
+            "5 min read"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "Your file never\nleaves your browser.",
+          "sub": "What GetPDF stores, what analytics we use, and how advertising works.",
+          "chips": [
+            "No uploads",
+            "No passwords stored"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "getjson",
+      "name": "GetJSON",
+      "origin": "https://getjson.getapps.tech",
+      "domain": "getjson.getapps.tech",
+      "root": "sites/getjson",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#22D3EE",
+        "#6D5EF8"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetJSON",
+        "description": "Paste JSON, get a live HTTPS endpoint with open CORS. No signup, no server."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "eyebrow": "Free tool",
+          "headline": "A live JSON endpoint\nin four seconds.",
+          "sub": "Paste JSON, get an HTTPS URL with open CORS. No signup, no server, no config.",
+          "chips": [
+            "No signup",
+            "Open CORS",
+            "Instant URL"
+          ],
+          "primary": true
+        },
+        {
+          "key": "docs",
+          "file": "docs.html",
+          "path": "/docs",
+          "eyebrow": "API reference",
+          "headline": "Create, read, update,\ndelete over HTTPS.",
+          "sub": "No API key for reads, open CORS, 256 KB per document. The full GetJSON reference.",
+          "chips": [
+            "REST",
+            "Open CORS",
+            "256 KB"
+          ]
+        },
+        {
+          "key": "dashboard",
+          "file": "dashboard.html",
+          "path": "/dashboard",
+          "eyebrow": "Dashboard",
+          "headline": "Every endpoint\nyou have published.",
+          "sub": "Live expiry countdowns. Sign in with Google to keep the list across devices.",
+          "chips": [
+            "Live expiry",
+            "Sync across devices"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "Public by design,\nexpiring by default.",
+          "sub": "What GetJSON stores, for how long, and who can read it.",
+          "chips": [
+            "3–6 day expiry",
+            "Public documents"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "getinterest",
+      "name": "GetInterest",
+      "origin": "https://getinterest.getapps.tech",
+      "domain": "getinterest.getapps.tech",
+      "root": "sites/getinterest",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#3DDC97",
+        "#22D3EE"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetInterest",
+        "description": "EMI, fixed deposit and SIP calculators with indicative rates from 57 banks."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "eyebrow": "Free tools",
+          "headline": "Loan and savings maths,\ndone properly.",
+          "sub": "EMI, fixed deposit and SIP calculators with indicative rates from 57 banks.",
+          "chips": [
+            "57 banks",
+            "No signup",
+            "In-browser"
+          ],
+          "primary": true
+        },
+        {
+          "key": "emi-calculator",
+          "file": "emi-calculator.html",
+          "path": "/emi-calculator",
+          "eyebrow": "EMI calculator",
+          "headline": "Home, car and\npersonal loan EMI.",
+          "sub": "Compare the monthly instalment at 57 banks across India, the US and the GCC, and model prepayments.",
+          "chips": [
+            "57 banks",
+            "Prepayments",
+            "Free"
+          ]
+        },
+        {
+          "key": "fd-calculator",
+          "file": "fd-calculator.html",
+          "path": "/fd-calculator",
+          "eyebrow": "FD calculator",
+          "headline": "Exact fixed deposit\nmaturity value.",
+          "sub": "Set amount, rate, term and compounding, then compare FD and CD rates across 57 banks.",
+          "chips": [
+            "Any compounding",
+            "Bank rates",
+            "Free"
+          ]
+        },
+        {
+          "key": "sip-calculator",
+          "file": "sip-calculator.html",
+          "path": "/sip-calculator",
+          "eyebrow": "SIP calculator",
+          "headline": "SIP growth with\nan annual step-up.",
+          "sub": "Project what a monthly investment grows to, and see invested versus gains year by year.",
+          "chips": [
+            "Step-up",
+            "Year by year",
+            "Free"
+          ]
+        },
+        {
+          "key": "banks",
+          "file": "banks.html",
+          "path": "/banks",
+          "eyebrow": "Rate table",
+          "headline": "57 banks compared\nin one table.",
+          "sub": "Home, car, personal loan and fixed deposit rates across India, the US and all six GCC states.",
+          "chips": [
+            "India",
+            "United States",
+            "GCC"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "Every calculation\nruns in your browser.",
+          "sub": "Nothing you type is sent to a server. What we store and how advertising works.",
+          "chips": [
+            "No data sent",
+            "In-browser"
+          ]
+        }
+      ]
+    }
+  ]
+}

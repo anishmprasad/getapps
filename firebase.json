@@ -12,15 +12,72 @@
         "supabase/**",
         "docs/**",
         "screenshots/**",
-        "*.py",
-        "*.png"
+        "perfect_screenshot.png",
+        "*.py"
       ],
       "rewrites": [
-        { "source": "/about", "destination": "/about.html" },
-        { "source": "/products", "destination": "/products.html" },
-        { "source": "/contact", "destination": "/contact.html" },
-        { "source": "/support", "destination": "/support.html" },
-        { "source": "**", "destination": "/index.html" }
+        {
+          "source": "/about",
+          "destination": "/about.html"
+        },
+        {
+          "source": "/products",
+          "destination": "/products.html"
+        },
+        {
+          "source": "/contact",
+          "destination": "/contact.html"
+        },
+        {
+          "source": "/support",
+          "destination": "/support.html"
+        },
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/assets/social/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/assets/icons/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/@(favicon.ico|apple-touch-icon.png)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/site.webmanifest",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/manifest+json; charset=utf-8"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        }
       ]
     },
     {
@@ -28,70 +85,258 @@
       "public": "sites/getinterest",
       "cleanUrls": true,
       "trailingSlash": false,
-      "ignore": ["**/.*"],
+      "ignore": [
+        "**/.*"
+      ],
       "headers": [
         {
+          "source": "/assets/social/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/assets/icons/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/@(favicon.ico|apple-touch-icon.png)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/site.webmanifest",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/manifest+json; charset=utf-8"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
           "source": "/assets/**/*.@(css|js|svg)",
-          "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, must-revalidate" }]
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
         },
         {
           "source": "**/*.html",
           "headers": [
-            { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-            { "key": "X-Content-Type-Options", "value": "nosniff" },
-            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            }
           ]
         }
       ],
-      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     },
     {
       "target": "getpdf",
       "public": "sites/getpdf",
       "cleanUrls": true,
       "trailingSlash": false,
-      "ignore": ["**/.*"],
+      "ignore": [
+        "**/.*"
+      ],
       "headers": [
         {
+          "source": "/assets/social/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/assets/icons/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/@(favicon.ico|apple-touch-icon.png)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/site.webmanifest",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/manifest+json; charset=utf-8"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
           "source": "/assets/vendor/**",
-          "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000, immutable"
+            }
+          ]
         },
         {
           "source": "/assets/**/*.@(css|js|svg)",
-          "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, must-revalidate" }]
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
         },
         {
           "source": "**/*.html",
           "headers": [
-            { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-            { "key": "X-Content-Type-Options", "value": "nosniff" },
-            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            }
           ]
         }
       ],
-      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     },
     {
       "target": "getjson",
       "public": "sites/getjson",
       "cleanUrls": true,
       "trailingSlash": false,
-      "ignore": ["**/.*"],
+      "ignore": [
+        "**/.*"
+      ],
       "headers": [
         {
+          "source": "/assets/social/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/assets/icons/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/@(favicon.ico|apple-touch-icon.png)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=2592000, must-revalidate"
+            }
+          ]
+        },
+        {
+          "source": "/site.webmanifest",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/manifest+json; charset=utf-8"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=86400, must-revalidate"
+            }
+          ]
+        },
+        {
           "source": "/assets/**/*.@(css|js|svg)",
-          "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, must-revalidate" }]
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=604800, must-revalidate"
+            }
+          ]
         },
         {
           "source": "**/*.html",
           "headers": [
-            { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-            { "key": "X-Content-Type-Options", "value": "nosniff" },
-            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin"
+            }
           ]
         }
       ],
-      "rewrites": [{ "source": "**", "destination": "/index.html" }]
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }

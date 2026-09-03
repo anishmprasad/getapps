@@ -14,7 +14,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITES = ["getinterest", "getpdf", "getjson"];
+const SITES = ["getinterest", "getpdf", "getjson", "getea"];
 const check = process.argv.includes("--check");
 let drift = 0;
 

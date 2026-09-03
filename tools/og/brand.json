@@ -376,6 +376,90 @@
           ]
         }
       ]
+    },
+    {
+      "key": "getea",
+      "name": "GetEA",
+      "origin": "https://getea.getapps.tech",
+      "domain": "getea.getapps.tech",
+      "root": "sites/getea",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#F5B944",
+        "#22D3EE"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetEA",
+        "description": "Build MetaTrader and cTrader trading robots from indicator and pattern blocks, backtest in the browser, export compilable code."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "eyebrow": "Free tool",
+          "headline": "Build a trading robot\nwithout writing code.",
+          "sub": "MT4, MT5 and cTrader. 55 indicators, 49 candlestick patterns, full risk management. No signup.",
+          "chips": [
+            "No signup",
+            "MT4 · MT5 · cTrader",
+            "Browser backtest"
+          ],
+          "primary": true
+        },
+        {
+          "key": "builder",
+          "file": "builder.html",
+          "path": "/builder",
+          "eyebrow": "The builder",
+          "headline": "Rules in.\nCompilable code out.",
+          "sub": "Stack entry and exit rules, set the risk, test on your own CSV, download the file.",
+          "chips": [
+            "8 steps",
+            "Local only",
+            "MQL4 · MQL5 · C#"
+          ]
+        },
+        {
+          "key": "blocks",
+          "file": "blocks.html",
+          "path": "/blocks",
+          "eyebrow": "Catalogue",
+          "headline": "Every indicator\nand every pattern.",
+          "sub": "55 indicators, 49 candlestick and price-action patterns, 12 ways to compare them.",
+          "chips": [
+            "55 indicators",
+            "49 patterns"
+          ]
+        },
+        {
+          "key": "docs",
+          "file": "docs.html",
+          "path": "/docs",
+          "eyebrow": "Documentation",
+          "headline": "Install, backtest,\nread the numbers.",
+          "sub": "How to get a generated robot onto a chart, and how to read a backtest honestly.",
+          "chips": [
+            "MT4",
+            "MT5",
+            "cTrader"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "Nothing leaves\nyour browser.",
+          "sub": "No account, no upload, no strategy database. Everything runs in this tab.",
+          "chips": [
+            "No account",
+            "No upload"
+          ]
+        }
+      ]
     }
   ]
 }

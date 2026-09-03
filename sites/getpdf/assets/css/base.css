@@ -82,6 +82,7 @@
 [data-product="interest"] { --accent: #3DDC97; --accent-2: #22D3EE; }
 [data-product="pdf"]      { --accent: #FF7A59; --accent-2: #FFB86B; }
 [data-product="json"]     { --accent: #22D3EE; --accent-2: #6D5EF8; }
+[data-product="ea"]       { --accent: #F5B944; --accent-2: #22D3EE; }
 
 /* ---------- 2. Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }

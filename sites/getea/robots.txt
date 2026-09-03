@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getea.getapps.tech/sitemap.xml

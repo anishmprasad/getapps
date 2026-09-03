@@ -77,6 +77,12 @@ A nested `publisher` Organization inside an article's JSON-LD is *not* treated
 as an existing Organization node — those pages still get one of their own,
 because a bare `publisher` carries no logo.
 
+## Social profiles
+
+The X and LinkedIn URLs live once, as `sameAs` at the top of `brand.json`, and
+are emitted into the `Organization` node on every page. The four `index.html`
+files keep their own hand-written `sameAs` — update both if the profiles move.
+
 ## Archived pages
 
 `v1/`, `v2/` and `v3/` are earlier design iterations that are still published

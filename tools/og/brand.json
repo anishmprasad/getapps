@@ -1,5 +1,9 @@
 {
   "$comment": "Source of truth for every social / OG / icon asset. Edit here, then run: python3 tools/og/generate.py",
+  "sameAs": [
+    "https://x.com/GetAppsTech",
+    "https://www.linkedin.com/in/getapps-tech/"
+  ],
   "sites": [
     {
       "key": "getapps",

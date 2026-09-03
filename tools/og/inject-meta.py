@@ -71,6 +71,7 @@ def org_jsonld(site, img):
             "height": 512,
         },
         "image": img,
+        "sameAs": CFG.get("sameAs", []),
     }, indent=2)
 
 

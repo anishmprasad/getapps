@@ -29,7 +29,7 @@
           "path": "/",
           "eyebrow": "The platform",
           "headline": "Sixteen business apps.\nOne platform.",
-          "sub": "One account, one invoice, one data layer — payments, support, email, automation and more.",
+          "sub": "One account, one invoice, one data layer \u2014 payments, support, email, automation and more.",
           "chips": [
             "One account",
             "One invoice",
@@ -273,7 +273,7 @@
           "headline": "Public by design,\nexpiring by default.",
           "sub": "What GetJSON stores, for how long, and who can read it.",
           "chips": [
-            "3–6 day expiry",
+            "3\u20136 day expiry",
             "Public documents"
           ]
         }
@@ -404,7 +404,7 @@
           "sub": "MT4, MT5 and cTrader. 55 indicators, 49 candlestick patterns, full risk management. No signup.",
           "chips": [
             "No signup",
-            "MT4 · MT5 · cTrader",
+            "MT4 \u00b7 MT5 \u00b7 cTrader",
             "Browser backtest"
           ],
           "primary": true
@@ -419,7 +419,7 @@
           "chips": [
             "8 steps",
             "Local only",
-            "MQL4 · MQL5 · C#"
+            "MQL4 \u00b7 MQL5 \u00b7 C#"
           ]
         },
         {
@@ -457,6 +457,69 @@
           "chips": [
             "No account",
             "No upload"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "paraphrase",
+      "name": "Paraphrase",
+      "word": [
+        "Para",
+        "phrase"
+      ],
+      "mark": "paraphrase",
+      "origin": "https://paraphrase.getapps.tech",
+      "domain": "paraphrase.getapps.tech",
+      "root": "sites/paraphrase",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#7C5CF5",
+        "#C084FC"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "Paraphrase",
+        "description": "Rewrite selected text with AI, in place, inside any Android app. On-device by default, no account."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "primary": true,
+          "eyebrow": "Android app",
+          "headline": "Rewrite any text,\nright where you typed it.",
+          "sub": "Select text in any app, tap Paraphrase, and the words are replaced in place. On-device AI by default.",
+          "chips": [
+            "No account",
+            "7 styles",
+            "On-device AI"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "No servers.\nNothing collected.",
+          "sub": "What leaves your phone, what stays on it, and who handles your text when you pick a provider.",
+          "chips": [
+            "No analytics",
+            "No account"
+          ]
+        },
+        {
+          "key": "terms",
+          "file": "terms.html",
+          "path": "/terms",
+          "eyebrow": "Terms of use",
+          "headline": "Free, as-is,\nand yours to read.",
+          "sub": "Licence, third-party AI providers, your API keys, AI output, acceptable use and liability.",
+          "chips": [
+            "Plain English",
+            "Free"
           ]
         }
       ]

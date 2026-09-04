@@ -44,43 +44,90 @@ def font_css():
     return "".join(rules)
 
 
-def mark_glyph(c1, c2, uid="g"):
-    """The four-tile GetApps mark on a transparent ground, viewBox 0 0 32 32."""
-    return f"""<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="glyph">
-  <defs><linearGradient id="{uid}" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-    <stop stop-color="{c1}"/><stop offset="1" stop-color="{c2}"/></linearGradient></defs>
+# ---- product marks -------------------------------------------------------
+# Every site draws the GetApps four-tile mark unless brand.json names another
+# under "mark". A mark is a function of the gradient id: it renders the artwork
+# inside a 0 0 32 32 viewBox and nothing else, so the tile, glyph, icon and
+# lockup templates all stay shape-agnostic.
+
+def _mark_getapps(uid, scale=1.0):
+    o = (32 - 32 * scale) / 2
+    return f"""<g transform="translate({o:.3f} {o:.3f}) scale({scale})">
   <rect x="1.6" y="1.6" width="12.8" height="12.8" rx="4.1" fill="none" stroke="url(#{uid})" stroke-width="2.4"/>
   <rect x="17.6" y="1.6" width="12.8" height="12.8" rx="6.4" fill="url(#{uid})"/>
   <rect x="1.6" y="17.6" width="12.8" height="12.8" rx="6.4" fill="url(#{uid})" opacity=".55"/>
   <rect x="17.6" y="17.6" width="12.8" height="12.8" rx="4.1" fill="none" stroke="url(#{uid})" stroke-width="2.4"/>
+</g>"""
+
+
+def _mark_paraphrase(uid, scale=1.0):
+    """Two lines of text inside a rewrite cycle — the Paraphrase app icon.
+
+    The artwork is authored on a 108 grid; the nested viewBox crops it to its
+    own ink bounds and rescales, so the caller only ever thinks in 32s.
+    """
+    w, h = 26 * scale, 32 * scale
+    return f"""<svg x="{(32 - w) / 2:.3f}" y="{(32 - h) / 2:.3f}" width="{w:.3f}" height="{h:.3f}"
+       viewBox="22.7 32.3 62.6 43.4">
+  <g fill="none" stroke="url(#{uid})" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29.6,45.1 A26,26 0 0 1 78.4,45.1"/>
+    <path d="M81.8,35.8 L78.4,45.1 L70.8,38.7"/>
+    <path d="M78.4,62.9 A26,26 0 0 1 29.6,62.9"/>
+    <path d="M26.2,72.2 L29.6,62.9 L37.2,69.3"/>
+    <path d="M40,48 L68,48"/>
+    <path d="M40,60 L58,60" stroke-opacity="0.72"/>
+  </g>
 </svg>"""
 
 
-def mark_tile(c1, c2, uid="t"):
+MARKS = {"getapps": _mark_getapps, "paraphrase": _mark_paraphrase}
+
+
+def mark_glyph(c1, c2, uid="g", mark="getapps"):
+    """The product mark on a transparent ground, viewBox 0 0 32 32."""
+    return f"""<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="glyph">
+  <defs><linearGradient id="{uid}" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+    <stop stop-color="{c1}"/><stop offset="1" stop-color="{c2}"/></linearGradient></defs>
+  {MARKS[mark](uid)}
+</svg>"""
+
+
+def mark_tile(c1, c2, uid="t", mark="getapps"):
     """The mark inside its dark rounded tile — matches the site favicon."""
     return f"""<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" class="tile">
   <defs><linearGradient id="{uid}" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
     <stop stop-color="{c1}"/><stop offset="1" stop-color="{c2}"/></linearGradient></defs>
   <rect width="32" height="32" rx="7.4" fill="{INK}"/>
   <rect x=".5" y=".5" width="31" height="31" rx="7" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
-  <g transform="translate(3.6 3.6) scale(0.775)">
-    <rect x="1.6" y="1.6" width="12.8" height="12.8" rx="4.1" fill="none" stroke="url(#{uid})" stroke-width="2.4"/>
-    <rect x="17.6" y="1.6" width="12.8" height="12.8" rx="6.4" fill="url(#{uid})"/>
-    <rect x="1.6" y="17.6" width="12.8" height="12.8" rx="6.4" fill="url(#{uid})" opacity=".55"/>
-    <rect x="17.6" y="17.6" width="12.8" height="12.8" rx="4.1" fill="none" stroke="url(#{uid})" stroke-width="2.4"/>
-  </g>
+  {MARKS[mark](uid, 0.775)}
 </svg>"""
 
 
-def pinned_tab_svg():
-    """Monochrome mask icon for Safari pinned tabs — solid shapes, no colour."""
-    return """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+_PINNED = {
+    "getapps": """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
   <path d="M1 1h6.2v6.2H1V1zm1.8 1.8v2.6h2.6V2.8H2.8z"/>
   <path d="M8.8 1H15v6.2H8.8V1z"/>
   <path d="M1 8.8h6.2V15H1V8.8z"/>
   <path d="M8.8 8.8H15V15H8.8V8.8zm1.8 1.8v2.6h2.6v-2.6h-2.6z"/>
 </svg>
-"""
+""",
+    "paraphrase": """<svg xmlns="http://www.w3.org/2000/svg" viewBox="22.7 32.3 62.6 43.4">
+  <g fill="none" stroke="#000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M29.6,45.1 A26,26 0 0 1 78.4,45.1"/>
+    <path d="M81.8,35.8 L78.4,45.1 L70.8,38.7"/>
+    <path d="M78.4,62.9 A26,26 0 0 1 29.6,62.9"/>
+    <path d="M26.2,72.2 L29.6,62.9 L37.2,69.3"/>
+    <path d="M40,48 L68,48"/>
+    <path d="M40,60 L58,60"/>
+  </g>
+</svg>
+""",
+}
+
+
+def pinned_tab_svg(mark="getapps"):
+    """Monochrome mask icon for Safari pinned tabs — one colour, no fill."""
+    return _PINNED[mark]
 
 
 SHARE_CSS = Template("""
@@ -235,7 +282,7 @@ SHARE_HTML = Template("""<!doctype html><html lang="en"><head><meta charset="utf
 </body></html>""")
 
 CARD_BODY = Template("""<div class="stage">
-    <div class="top">$tile<div class="word"><span class="a">Get</span><span class="b">$suffix</span></div></div>
+    <div class="top">$tile<div class="word"><span class="a">$worda</span><span class="b">$wordb</span></div></div>
     <div class="mid">
       <div class="eyebrow">$eyebrow</div>
       <h1>$headline</h1>
@@ -245,7 +292,7 @@ CARD_BODY = Template("""<div class="stage">
   </div>""")
 
 BANNER_BODY = Template("""<div class="stage"><div class="safe">
-    <div class="top">$tile<div class="word"><span class="a">Get</span><span class="b">$suffix</span></div></div>
+    <div class="top">$tile<div class="word"><span class="a">$worda</span><span class="b">$wordb</span></div></div>
     <h1>$headline</h1>
     <div class="chips">$chips</div>
     <div class="domain">$domain</div>
@@ -254,7 +301,7 @@ BANNER_BODY = Template("""<div class="stage"><div class="safe">
 AVATAR_BODY = Template("$glyph")
 
 LOGO_BODY = Template("""<div class="lockup">$tile
-    <div class="word"><span class="a">Get</span><span class="b">$suffix</span></div>
+    <div class="word"><span class="a">$worda</span><span class="b">$wordb</span></div>
   </div>""")
 
 ICON_HTML = Template("""<!doctype html><html><head><meta charset="utf-8"><style>

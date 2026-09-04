@@ -45,6 +45,15 @@
         "getea"
       ],
       "port": 4324
+    },
+    {
+      "name": "paraphrase",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "paraphrase"
+      ],
+      "port": 4325
     }
   ]
 }

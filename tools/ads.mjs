@@ -62,11 +62,17 @@ for (const file of walk(join(root, "sites"))) {
   onCount += isJs ? (live.match(ENABLED_JS) || []).length : 0;
 
   if (mode === "off") {
+    // Already-disabled blocks still contain slot markup, and HTML comments do
+    // not nest — wrapping one a second time would leave a stray "GA:AD:OFF -->"
+    // rendering as page text. So lift them out, wrap what is left, put them back.
+    const parked = [];
+    next = next.replace(DISABLED, (m) => `\u0000GA:AD:PARKED:${parked.push(m) - 1}\u0000`);
     for (const re of ENABLED) {
       next = next.replace(re, (_m, indent, block) =>
         `${indent}<!-- GA:AD:OFF\n${indent}${block}\n${indent}GA:AD:OFF -->`);
     }
     if (isJs) next = next.replace(ENABLED_JS, (_m, indent, stmt) => `${indent}// GA:AD:OFF ${stmt}`);
+    next = next.replace(/\u0000GA:AD:PARKED:(\d+)\u0000/g, (_m, i) => parked[+i]);
   } else if (mode === "on") {
     next = next.replace(DISABLED, (_m, _indent, block) => block);
     if (isJs) next = next.replace(DISABLED_JS, (_m, indent, stmt) => `${indent}${stmt}`);

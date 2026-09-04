@@ -200,7 +200,9 @@
   </div>
 </section>
 
+<!-- GA:AD:OFF
 <div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="top-leaderboard"></div></div>
+GA:AD:OFF -->
 
 <!-- ================= PLATFORMS ================= -->
 <section class="section section--tight" id="platforms">
@@ -334,7 +336,9 @@
   </div>
 </section>
 
+<!-- GA:AD:OFF
 <div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="content-mid"></div></div>
+GA:AD:OFF -->
 
 <!-- ================= BACKTEST ================= -->
 <section class="section" id="backtest">
@@ -403,7 +407,48 @@
       <span class="eyebrow">Questions</span>
       <h2>The things people ask before they start.</h2>
     </div>
-    <div class="faq"><button class="faq__q" type="button">Do I need to know how to code?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>No. You pick blocks and comparisons — “RSI crosses above 30”, “close is above the 200 EMA”, “a bullish engulfing printed” — and the builder writes the MQL4, MQL5 or C# for you. Knowing a little code helps you read what came out, which is worth doing before you run it.</p></div></div><div class="faq"><button class="faq__q" type="button">Is there a signup?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>No, and there is no account to make. Strategies are kept in your browser's local storage and in whatever JSON you choose to export. Clearing site data deletes them, so export anything you care about.</p></div></div><div class="faq"><button class="faq__q" type="button">Where does my price data go when I backtest?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>Nowhere. The CSV is read by JavaScript in your tab, the simulation runs on your own CPU, and the file is never sent anywhere. Nothing about GetEA needs a server once the page has loaded.</p></div></div><div class="faq"><button class="faq__q" type="button">Will the generated file actually compile?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>That is the whole point of the design. Every indicator MetaTrader or cTrader does not ship natively is written into the file itself, so there is nothing to install alongside it. Press F7 in MetaEditor or Build in cTrader and it compiles as one file.</p></div></div><div class="faq"><button class="faq__q" type="button">Is the backtest the same as the platform's own tester?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>No, and it should not be treated as one. GetEA simulates bar by bar with your assumed spread, commission and slippage, and it resolves a bar conservatively — if a stop and a target are both inside the same bar it takes the stop. The platform's tester uses your broker's real history and, in cTrader, real ticks. Use GetEA to find out quickly whether the logic does what you meant; use the platform tester before you trust it.</p></div></div><div class="faq"><button class="faq__q" type="button">What is a realistic win rate?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>A high win rate on its own tells you very little. A strategy that wins 80% of the time with a stop three times its target loses money; one that wins 35% of the time with a 3:1 payoff makes it. Read the profit factor, the expectancy and the drawdown next to the win rate — the builder shows all of them.</p></div></div><div class="faq"><button class="faq__q" type="button">Can I edit the code afterwards?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>Yes. The output is ordinary, commented MQL or C# with named inputs, not obfuscated or licence-locked. Change it, extend it, or lift a helper function out of it — it is yours.</p></div></div><div class="faq"><button class="faq__q" type="button">Does it support martingale and grid systems?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>It does, with the warning they deserve. Both produce beautiful equity curves right up until the sequence that ends them. If you switch either on, the builder makes you look at a lot ceiling, an equity stop and a losing-run limit on the same screen.</p></div></div><div class="faq"><button class="faq__q" type="button">Which one should I build for — MT4, MT5 or cTrader?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>Whichever your broker gives you. If you have a free choice: cTrader has the best backtester and the nicest language, MT5 has the widest coverage and a capable tester, MT4 is the legacy option you pick because something else forces you to.</p></div></div><div class="faq"><button class="faq__q" type="button">Is any of this financial advice?<span class="faq__i" aria-hidden="true"></span></button><div class="faq__a"><p>No. GetEA is a code generator and a simulator. It has no opinion about what you should trade, it makes no forecast, and nothing it outputs is a recommendation. Trading leveraged products carries a real risk of losing more than you deposit.</p></div></div>
+    <div class="faq" data-reveal>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Do I need to know how to code?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>No. You pick blocks and comparisons — “RSI crosses above 30”, “close is above the 200 EMA”, “a bullish engulfing printed” — and the builder writes the MQL4, MQL5 or C# for you. Knowing a little code helps you read what came out, which is worth doing before you run it.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Is there a signup?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>No, and there is no account to make. Strategies are kept in your browser's local storage and in whatever JSON you choose to export. Clearing site data deletes them, so export anything you care about.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Where does my price data go when I backtest?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>Nowhere. The CSV is read by JavaScript in your tab, the simulation runs on your own CPU, and the file is never sent anywhere. Nothing about GetEA needs a server once the page has loaded.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Will the generated file actually compile?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>That is the whole point of the design. Every indicator MetaTrader or cTrader does not ship natively is written into the file itself, so there is nothing to install alongside it. Press F7 in MetaEditor or Build in cTrader and it compiles as one file.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Is the backtest the same as the platform's own tester?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>No, and it should not be treated as one. GetEA simulates bar by bar with your assumed spread, commission and slippage, and it resolves a bar conservatively — if a stop and a target are both inside the same bar it takes the stop. The platform's tester uses your broker's real history and, in cTrader, real ticks. Use GetEA to find out quickly whether the logic does what you meant; use the platform tester before you trust it.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">What is a realistic win rate?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>A high win rate on its own tells you very little. A strategy that wins 80% of the time with a stop three times its target loses money; one that wins 35% of the time with a 3:1 payoff makes it. Read the profit factor, the expectancy and the drawdown next to the win rate — the builder shows all of them.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Can I edit the code afterwards?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>Yes. The output is ordinary, commented MQL or C# with named inputs, not obfuscated or licence-locked. Change it, extend it, or lift a helper function out of it — it is yours.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Does it support martingale and grid systems?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>It does, with the warning they deserve. Both produce beautiful equity curves right up until the sequence that ends them. If you switch either on, the builder makes you look at a lot ceiling, an equity stop and a losing-run limit on the same screen.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Which one should I build for — MT4, MT5 or cTrader?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>Whichever your broker gives you. If you have a free choice: cTrader has the best backtester and the nicest language, MT5 has the widest coverage and a capable tester, MT4 is the legacy option you pick because something else forces you to.</p></div></div>
+      </div>
+      <div class="faq__item">
+        <button class="faq__q" type="button" aria-expanded="false">Is any of this financial advice?<i aria-hidden="true"></i></button>
+        <div class="faq__a"><div><p>No. GetEA is a code generator and a simulator. It has no opinion about what you should trade, it makes no forecast, and nothing it outputs is a recommendation. Trading leveraged products carries a real risk of losing more than you deposit.</p></div></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -421,7 +466,9 @@
   </div>
 </section>
 
+<!-- GA:AD:OFF
 <div class="wrap"><span class="ad__label">Advertisement</span><div class="ad" data-slot="footer-banner"></div></div>
+GA:AD:OFF -->
 
 </main>
 

@@ -1,0 +1,19 @@
+# =====================================================================
+# GetJSON — Supabase CLI configuration
+#
+# Committing this means `supabase functions deploy json` carries the right
+# settings on every deploy instead of depending on someone remembering the
+# --no-verify-jwt flag. Getting that wrong is not a small mistake: with JWT
+# verification on, an unauthenticated `curl <url>/<id>` gets a 401 and the
+# product's whole promise stops working.
+#
+# `supabase link --project-ref ccmcwzdvrhhfbdqljtxn` writes project_id here
+# too; it is pre-filled so a fresh clone can deploy without linking first.
+# =====================================================================
+project_id = "ccmcwzdvrhhfbdqljtxn"
+
+[functions.json]
+# Reads are public by design. The function does its own authorisation:
+# writes need the creator's X-Edit-Token or a Supabase access token whose
+# user owns the row. See supabase/functions/json/index.ts.
+verify_jwt = false

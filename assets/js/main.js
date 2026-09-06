@@ -561,28 +561,88 @@
   }
 
 
-  /* ---------------- Contact form (demo handler) ---------------- */
+  /* ---------------- Contact form ---------------- */
+  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwMIeQKLHmewWtnFcyOslfNbduM62d0_O3EcRUKC96vg0gUvON_hxiQkXmxOvzHAzNClQ/exec";
+
   function initForm() {
     $$("[data-form]").forEach(function (form) {
       var note = $(".form-note", form);
+      var btn = $("button[type=submit]", form);
+      var btnHTML = btn ? btn.innerHTML : "";
+      var endpoint = form.getAttribute("data-endpoint") || FORM_ENDPOINT;
+      var sending = false;
+
+      function say(msg, bad) {
+        if (!note) return;
+        note.textContent = msg;
+        note.classList.toggle("bad", !!bad);
+        note.classList.add("show");
+      }
+
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (sending) return;
+
         var missing = $$("[required]", form).filter(function (f) { return !f.value.trim(); });
         var email = $("input[type=email]", form);
         var badMail = email && email.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value);
-        if (!note) return;
-        note.classList.remove("bad");
         if (missing.length || badMail) {
-          note.textContent = badMail && !missing.length
+          say(badMail && !missing.length
             ? "That email address doesn't look right — mind checking it?"
-            : "Please fill in the required fields before sending.";
-          note.classList.add("show", "bad");
+            : "Please fill in the required fields before sending.", true);
           (missing[0] || email).focus();
           return;
         }
-        /* Wire this up to your own endpoint (fetch POST) to make it live. */
-        note.textContent = "Thanks — this is a demo form, so nothing was sent. Connect it to your endpoint in assets/js/main.js.";
-        note.classList.add("show");
+
+        /* Honeypot: a real person never sees this field, so a value means a bot.
+           Show the success note anyway so the bot has nothing to learn. */
+        var trap = $("input[name=company]", form);
+        if (trap && trap.value) {
+          form.reset();
+          say("Thanks — your message is in. We reply within one business day.");
+          return;
+        }
+
+        var body = new URLSearchParams();
+        $$("input, select, textarea", form).forEach(function (f) {
+          if (!f.name || f.name === "company") return;
+          body.append(f.name, f.value);
+        });
+        body.append("page", location.pathname + location.hash);
+        body.append("submittedAt", new Date().toISOString());
+
+        sending = true;
+        if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
+        say("Sending…");
+        note.classList.remove("bad");
+
+        /* urlencoded keeps this a "simple" request, so the browser skips the
+           CORS preflight that Apps Script endpoints don't answer. */
+        fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: body.toString()
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            return res.text();
+          })
+          .then(function (text) {
+            var data = null;
+            try { data = JSON.parse(text); } catch (err) { /* plain-text reply is fine */ }
+            if (data && (data.success === false || data.result === "error")) {
+              throw new Error(data.message || "endpoint reported an error");
+            }
+            form.reset();
+            say("Thanks — your message is in. We reply within one business day.");
+          })
+          .catch(function () {
+            say("That didn't go through. Please try again, or email help@getapps.tech directly.", true);
+          })
+          .then(function () {
+            sending = false;
+            if (btn) { btn.disabled = false; btn.innerHTML = btnHTML; }
+          });
       });
     });
   }

@@ -1,5 +1,29 @@
 {
   "projects": {
     "default": "getapps-tech"
+  },
+  "targets": {
+    "getapps-tech": {
+      "hosting": {
+        "main": [
+          "getapps-tech"
+        ],
+        "getinterest": [
+          "getapps-getinterest"
+        ],
+        "getpdf": [
+          "getapps-getpdf"
+        ],
+        "getjson": [
+          "getapps-getjson"
+        ],
+        "getea": [
+          "getapps-getea"
+        ],
+        "paraphrase": [
+          "getapps-paraphrase"
+        ]
+      }
+    }
   }
 }

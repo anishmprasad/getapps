@@ -36,6 +36,24 @@
         "getjson"
       ],
       "port": 4323
+    },
+    {
+      "name": "getea",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "getea"
+      ],
+      "port": 4324
+    },
+    {
+      "name": "paraphrase",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "paraphrase"
+      ],
+      "port": 4325
     }
   ]
 }

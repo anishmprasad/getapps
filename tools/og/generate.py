@@ -107,27 +107,30 @@ def build_share_html(site, page, variant, w, h, layout, u):
     css = T.SHARE_CSS.substitute(w=w, h=h, u=u, c1=c1, c2=c2, ink=T.INK,
                                  fontface=T.font_css(),
                                  safew=int(w * BANNER_SAFE), **m)
-    suffix = site["name"][3:]  # "GetPDF" -> "PDF"
-    tile = T.mark_tile(c1, c2)
+    # The wordmark splits into a plain half and a gradient half. Most sites
+    # are "Get" + the rest; brand.json can override the split.
+    word = site.get("word") or ["Get", site["name"][3:]]  # "GetPDF" -> Get|PDF
+    mark = site.get("mark", "getapps")
+    tile = T.mark_tile(c1, c2, "t", mark)
     watermark = ("" if not m["wmark"] else
-                 T.mark_glyph(c1, c2, "wm").replace('class="glyph"', 'class="watermark"'))
+                 T.mark_glyph(c1, c2, "wm", mark).replace('class="glyph"', 'class="watermark"'))
 
     if layout == "avatar":
-        body = T.AVATAR_BODY.substitute(glyph=T.mark_glyph(c1, c2))
+        body = T.AVATAR_BODY.substitute(glyph=T.mark_glyph(c1, c2, "g", mark))
         cls = "avatar"
     elif layout in ("logo", "logostack"):
-        body = T.LOGO_BODY.substitute(tile=tile, suffix=esc(suffix))
+        body = T.LOGO_BODY.substitute(tile=tile, worda=esc(word[0]), wordb=esc(word[1]))
         cls = layout
     elif layout == "banner":
         body = T.BANNER_BODY.substitute(
-            tile=tile, suffix=esc(suffix),
+            tile=tile, worda=esc(word[0]), wordb=esc(word[1]),
             headline=esc(page["headline"].replace("\n", " ")),
             chips=chips_html(page.get("chips", [])[:3]),
             domain=esc(site["domain"]))
         cls = "banner"
     else:
         body = T.CARD_BODY.substitute(
-            tile=tile, suffix=esc(suffix), eyebrow=esc(page["eyebrow"]),
+            tile=tile, worda=esc(word[0]), wordb=esc(word[1]), eyebrow=esc(page["eyebrow"]),
             headline=esc(page["headline"]), sub=esc(page["sub"]),
             chips=chips_html(page.get("chips", [])), domain=esc(site["domain"]))
         cls = f"card {layout}"
@@ -258,7 +261,7 @@ def run(only=None, do_social=True, do_icons=True):
 
             if do_icons:
                 c1, c2 = site["accent"]
-                glyph = T.mark_glyph(c1, c2)
+                glyph = T.mark_glyph(c1, c2, "g", site.get("mark", "getapps"))
                 for rel, size, plate, radius, inner in ICONS:
                     doc = T.ICON_HTML.substitute(size=size,
                                                  plate=plate, radius=radius,
@@ -273,7 +276,8 @@ def run(only=None, do_social=True, do_icons=True):
                 total += 1
                 print(f"    {'favicon.ico':<34} {'+'.join(map(str, ICO_SIZES)):<9} {ico / 1024:6.1f} KB")
 
-                (root / "assets/icons/safari-pinned-tab.svg").write_text(T.pinned_tab_svg())
+                (root / "assets/icons/safari-pinned-tab.svg").write_text(
+                    T.pinned_tab_svg(site.get("mark", "getapps")))
                 write_manifest(site, root)
                 total += 3
                 print(f"    {'safari-pinned-tab.svg':<34}")

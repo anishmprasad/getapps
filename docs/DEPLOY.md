@@ -1,6 +1,6 @@
 # Deploying the product subdomains
 
-Three new sites live alongside the existing `getapps.tech` marketing site in the
+Four product sites live alongside the existing `getapps.tech` marketing site in the
 same Firebase project (`getapps-tech`), using Firebase Hosting's multi-site
 support. The root site is untouched apart from the `ignore` list.
 
@@ -10,6 +10,7 @@ support. The root site is untouched apart from the `ignore` list.
 | `getinterest` | `sites/getinterest` | getinterest.getapps.tech |
 | `getpdf` | `sites/getpdf` | getpdf.getapps.tech |
 | `getjson` | `sites/getjson` | getjson.getapps.tech |
+| `getea` | `sites/getea` | getea.getapps.tech |
 
 ## 1. Create the hosting sites
 
@@ -19,6 +20,7 @@ Site IDs must be globally unique across Firebase, which is why they are prefixed
 firebase hosting:sites:create getapps-getinterest
 firebase hosting:sites:create getapps-getpdf
 firebase hosting:sites:create getapps-getjson
+firebase hosting:sites:create getapps-getea
 ```
 
 `.firebaserc` already maps deploy targets to those IDs. If you choose different
@@ -27,7 +29,8 @@ IDs, update the `targets` block there to match.
 ## 2. Attach the custom domains
 
 In the Firebase console, under *Hosting → (site) → Add custom domain*, add
-`getinterest.getapps.tech`, `getpdf.getapps.tech` and `getjson.getapps.tech` to
+`getinterest.getapps.tech`, `getpdf.getapps.tech`, `getjson.getapps.tech` and
+`getea.getapps.tech` to
 their respective sites. Firebase will give you the DNS records to create at your
 registrar — normally two A records per subdomain, or a CNAME if your DNS
 provider supports flattening. Certificates are issued automatically once the

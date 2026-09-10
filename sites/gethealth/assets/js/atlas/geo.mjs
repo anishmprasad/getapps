@@ -517,6 +517,9 @@ function sheetGeo(s) {
   }
   const geo = surfaceNets(F, nx, ny, nz, o, cell);
   const P = geo.getAttribute("position");
+  // Striation coordinates run across the fibre direction (`fib`, degrees).
+  const fa = ((s.fib ?? 90) * Math.PI) / 180, UV = geo.getAttribute("uv");
+  for (let i = 0; i < P.count; i++) UV.setXY(i, (-P.getX(i) * Math.sin(fa) + P.getY(i) * Math.cos(fa)) / 0.06, 0);
   if (s.wr) {
     const { tab, R0, a0 = 0, off = 0 } = s.wr;
     for (let i = 0; i < P.count; i++) {

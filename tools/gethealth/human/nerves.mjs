@@ -128,7 +128,7 @@ N({
 /* ---- lower limb (left; mirrored) ---- */
 N({
   id: "lumbar-plexus", name: "Lumbar Plexus", grp: "Lower limb", bi: 1, q: 3,
-  g: [1.11, 1.075, 1.04, 1.005].map((y) => tube([[0.022, y, -0.034], [0.04, y - 0.03, -0.03], [0.058, 0.96, -0.012]], 0.0013))],
+  g: [1.11, 1.075, 1.04, 1.005].map((y) => tube([[0.022, y, -0.034], [0.04, y - 0.03, -0.03], [0.058, 0.96, -0.012]], 0.0013)),
   d: "A network formed by spinal nerves L1–L4 inside the psoas major muscle.",
   fn: "Supplies the lower abdominal wall, groin and front and inner thigh through the femoral, obturator and genitofemoral nerves.",
   kid, meta: { Roots: "L1–L4" },

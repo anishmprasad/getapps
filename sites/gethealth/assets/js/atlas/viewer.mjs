@@ -32,7 +32,7 @@ const PRESETS = {
   bone:      { color: "#E9DEC8", roughness: 0.62, metalness: 0.0 },
   cartilage: { color: "#C9DDE0", roughness: 0.38, clearcoat: 0.4 },
   tooth:     { color: "#F6F2E7", roughness: 0.22, clearcoat: 0.6 },
-  muscle:    { color: "#B9434F", roughness: 0.5, clearcoat: 0.25, stripes: true },
+  muscle:    { color: "#A93A45", roughness: 0.5, clearcoat: 0.25, stripes: true },
   tendon:    { color: "#E7DECC", roughness: 0.4, clearcoat: 0.3, stripes: true },
   artery:    { color: "#C8232F", roughness: 0.35, clearcoat: 0.5 },
   vein:      { color: "#3353B5", roughness: 0.35, clearcoat: 0.5 },

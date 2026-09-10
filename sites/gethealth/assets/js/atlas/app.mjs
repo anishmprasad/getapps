@@ -267,6 +267,7 @@ export class App {
         <button type="button" class="at-x" data-card="close" aria-label="Close">${ICON.x}</button>
       </div>
       <h2>${esc(it.name)}</h2>
+      ${p.org && p.org !== p.name ? `<p class="at-card__org">Part of the <b>${esc(p.org)}</b></p>` : ""}
       ${this.kids && p.kid ? `<p class="at-kid">${esc(p.kid)}</p>` : ""}
       <div class="at-card__body">
         <p>${esc(p.d)}</p>
@@ -344,7 +345,7 @@ export class App {
     for (const it of this.items) {
       if (it.part.sex && it.part.sex !== vs.sex) continue;
       const name = it.name.toLowerCase(), base = it.part.name.toLowerCase();
-      const hay = `${name} ${it.part.grp || ""} ${this.sysById[it.part.sys].name} ${it.part.aka || ""}`.toLowerCase();
+      const hay = `${name} ${it.part.grp || ""} ${it.part.org || ""} ${this.sysById[it.part.sys].name} ${it.part.aka || ""}`.toLowerCase();
       if (!words.every((w) => hay.includes(w))) continue;
       let s = 0;
       if (base === q || name === q) s += 100;
@@ -402,7 +403,15 @@ export class App {
     const vs = this.viewer.state;
     const maxQ = this.kids ? 1 : 2;
     let pool = this.items.filter((it) => (it.part.q || 3) <= maxQ && (!it.part.sex || it.part.sex === vs.sex));
-    if (this.kids) pool = pool.filter((it) => !it.side || it.side === "l");
+    if (this.kids) {
+      // kids are asked for whole organs ("Find the Heart"), not individual chambers
+      const seen = new Set();
+      pool = this.items.filter((it) => (it.part.q === 1 || it.part.org) && (!it.part.sex || it.part.sex === vs.sex)).filter((it) => {
+        const key = it.part.org || it.part.id;
+        if (seen.has(key)) return false;
+        seen.add(key); return true;
+      });
+    }
     if (pool.length < 4) pool = this.items.filter((it) => !it.part.sex || it.part.sex === vs.sex);
     pool = pool.sort(() => Math.random() - 0.5).slice(0, 10);
     this.quiz = { pool, i: 0, score: 0, tries: 0 };
@@ -416,7 +425,9 @@ export class App {
   quizTarget() { const q = this.quiz; return q && q.pool[q.i]; }
   quizMatches(id, target) {
     if (id === target.id) return true;
-    return this.kids && this.itemById.get(id)?.part === target.part; // kids: either side counts
+    const p = this.itemById.get(id)?.part;
+    if (!this.kids || !p) return false;
+    return p === target.part || (target.part.org && p.org === target.part.org); // kids: either side / any part of the organ
   }
   renderQuiz(msg = "", tone = "") {
     const q = this.quiz, t = this.quizTarget();
@@ -428,7 +439,7 @@ export class App {
         <button type="button" data-quiz="again">Play again</button><button type="button" data-quiz="end">Done</button></div>`;
       return;
     }
-    const label = this.kids ? t.part.name : t.name;
+    const label = this.kids ? (t.part.org || t.part.name) : t.name;
     el.innerHTML = `<div class="at-quiz__in">
       <span class="at-quiz__n">${q.i + 1}/${q.pool.length}</span>
       <span>Find the <b>${esc(label)}</b></span>

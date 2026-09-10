@@ -259,6 +259,10 @@ export class Viewer extends EventTarget {
       if (!geo) { onProgress?.(++done, parts.length); return; }
       const part = parts[i];
       const sides = part.bi ? [["l", geo], ["r", mirrorGeometry(geo)]] : [[null, geo]];
+      if (part.ro && sides[1]) { // per-side offset, e.g. the right kidney sits lower
+        sides[1][1].translate(part.ro[0], part.ro[1], part.ro[2]);
+        sides[1][1].computeBoundingBox(); sides[1][1].computeBoundingSphere();
+      }
       built[i] = sides.map(([side, g]) => {
         const mesh = new THREE.Mesh(g, makeMaterial(part, sysColor[part.sys]));
         const id = side ? `${part.id}.${side}` : part.id;

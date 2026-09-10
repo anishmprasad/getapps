@@ -1,5 +1,7 @@
 /** Human species definition: systems, presets and every part. */
 import skeleton from "./skeleton.mjs";
+import head from "./head.mjs";
+import organs from "./organs.mjs";
 
 const systems = [
   { id: "skeletal", name: "Skeleton", color: "#E6D9BF" },
@@ -18,7 +20,7 @@ const systems = [
   { id: "integumentary", name: "Skin", color: "#E6B896", off: 1 },
 ];
 
-const parts = [...skeleton].filter((p) => systems.some((s) => s.id === p.sys));
+const parts = [...skeleton, ...head, ...organs].filter((p) => systems.some((s) => s.id === p.sys));
 
 export default {
   id: "human",

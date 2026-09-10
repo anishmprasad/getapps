@@ -1,8 +1,8 @@
 /**
  * Thoracic, abdominal and pelvic organs, plus the skin.
  */
-import { add, sub, mul, norm, lerp, ell, tube, sdf, sheet, S, both, makePart } from "../lib.mjs";
-import { L, SPINE } from "./rig.mjs";
+import { add, mul, norm, lerp, ell, tube, sdf, sheet, S, both, makePart } from "../lib.mjs";
+import { L } from "./rig.mjs";
 
 const parts = [];
 const P = (p) => parts.push(makePart(p));

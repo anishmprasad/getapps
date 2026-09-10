@@ -47,18 +47,18 @@ async function pdfText(file, onStatus) {
     }
   }
   const text = lines.join("\n");
-  if (text.replace(/\s/g, "").length > 40) return text;
+  if (text.replace(/\s/g, "").length > 40) return { text, ocr: false };
   // No text layer — it's a scan. Render each page and OCR it.
   const canvases = [];
   for (let n = 1; n <= Math.min(doc.numPages, 6); n++) {
     const page = await doc.getPage(n);
-    const vp = page.getViewport({ scale: 2 });
+    const vp = page.getViewport({ scale: 3 });
     const c = document.createElement("canvas");
     c.width = vp.width; c.height = vp.height;
     await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
     canvases.push(c);
   }
-  return ocr(canvases, onStatus);
+  return { text: await ocr(canvases, onStatus), ocr: true };
 }
 
 function loadScript(src) {
@@ -69,9 +69,23 @@ function loadScript(src) {
     document.head.appendChild(s);
   });
 }
+/** Text recognition misses decimal points in small print, so enlarge images to ~2400 px wide first. */
+async function upscale(img) {
+  const bmp = img instanceof HTMLCanvasElement ? img : await createImageBitmap(img);
+  const k = Math.min(3, Math.max(1, 2400 / bmp.width));
+  if (k <= 1.05 && img instanceof HTMLCanvasElement) return img;
+  const c = document.createElement("canvas");
+  c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  const g = c.getContext("2d");
+  g.imageSmoothingQuality = "high";
+  g.filter = "grayscale(1) contrast(1.15)";
+  g.drawImage(bmp, 0, 0, c.width, c.height);
+  return c;
+}
 async function ocr(images, onStatus) {
   onStatus?.("Loading text recognition…");
   await loadScript(TESSERACT);
+  images = await Promise.all(images.map(upscale));
   const worker = await window.Tesseract.createWorker("eng", 1, {
     logger: (m) => { if (m.status === "recognizing text") onStatus?.(`Recognising text… ${Math.round(m.progress * 100)}%`); },
   });
@@ -115,11 +129,11 @@ export class ReportSheet {
     this.error = null;
     this.render();
     try {
-      let text;
-      if (/pdf$/i.test(file.type) || /\.pdf$/i.test(file.name)) text = await pdfText(file, (s) => this.setBusy(s));
-      else if (/^image\//.test(file.type)) text = await ocr([file], (s) => this.setBusy(s));
-      else text = await file.text();
-      this.analyseText(text, file.name);
+      let got;
+      if (/pdf$/i.test(file.type) || /\.pdf$/i.test(file.name)) got = await pdfText(file, (s) => this.setBusy(s));
+      else if (/^image\//.test(file.type)) got = { text: await ocr([file], (s) => this.setBusy(s)), ocr: true };
+      else got = { text: await file.text(), ocr: false };
+      this.analyseText(got.text, file.name, got.ocr);
     } catch (e) {
       console.error(e);
       this.busy = null;
@@ -131,8 +145,8 @@ export class ReportSheet {
   }
   setBusy(s) { this.busy = s; const el = $("[data-busy]", this.host); if (el) el.textContent = s; else this.render(); }
 
-  analyseText(text, source = "Pasted text") {
-    const { results, unmatched } = parseReport(text, this.bm.markers);
+  analyseText(text, source = "Pasted text", ocr = false) {
+    const { results, unmatched } = parseReport(text, this.bm.markers, { ocr });
     this.raw = results;
     this.unmatched = unmatched;
     this.source = source;
@@ -179,7 +193,7 @@ export class ReportSheet {
     this.host.innerHTML = `
       <div class="rp-head">
         <div class="rp-head__top">
-          <div><h2>Lab report scanner</h2><p>${ICON.focus} Private — your report never leaves this browser.</p></div>
+          <div><h2>Lab report scanner</h2><p>${ICON.lock} Private — your report never leaves this browser.</p></div>
           <button type="button" class="at-x" data-rp="close" aria-label="Close">${ICON.x}</button>
         </div>
         <div class="rp-tabs" role="tablist">${tabs.map(([id, n]) => `<button type="button" role="tab" data-tab="${id}" aria-selected="${this.tab === id}">${n}</button>`).join("")}</div>
@@ -229,13 +243,14 @@ export class ReportSheet {
       return `<div class="rp-item">
         <button type="button" data-res="${m.id}" aria-expanded="${open}">
           <span class="rp-item__name">${esc(m.name)}</span><span class="rp-item__val">${esc(r.display)}</span>
-          <span class="rp-item__sub">${esc(rangeText)}</span><span class="rp-pill ${cls}">${esc(r.label)}</span>
+          <span class="rp-item__sub">${esc(rangeText)}${r.note ? ` · <b style="color:var(--warn)">check value</b>` : ""}</span><span class="rp-pill ${cls}">${esc(r.label)}</span>
           ${m.qual ? "" : `<span class="rp-range" aria-hidden="true"><i style="left:${pos}%"></i></span>`}
         </button>
         ${open ? `<div class="rp-detail">
           <p><b>What it measures.</b> ${esc(m.purpose)}</p>
           ${r.status === "high" ? `<p><b>Higher than expected can mean:</b> ${esc(m.high)}</p>` : r.status === "low" ? `<p><b>Lower than expected can mean:</b> ${esc(m.low)}</p>` : `<p><b>In range.</b> ${m.qual ? "" : `High values can point to: ${esc(m.high)}`}</p>`}
           ${organs ? `<div><b>Related organs</b><div class="at-chips">${organs}</div></div>` : ""}
+          ${r.note ? `<p style="color:var(--warn)">${esc(r.note)}</p>` : ""}
           <p style="font-size:.7rem;color:var(--faint)">Read from: “${esc(r.line.slice(0, 80))}”</p>
         </div>` : ""}
       </div>`;

@@ -4,8 +4,8 @@
  * onto an elliptical model of the torso (see TORSO / BACK tables below).
  * Every muscle is authored on the left and mirrored (bi) unless midline.
  */
-import { add, lerp, spin, tube, ell, sheet, sdf, S, makePart } from "../lib.mjs";
-import { L, HAND, FOOT, TORSO, canalAt } from "./rig.mjs";
+import { add, spin, tube, ell, sheet, sdf, S, makePart } from "../lib.mjs";
+import { HAND, FOOT, TORSO, canalAt } from "./rig.mjs";
 
 const parts = [];
 const H = (u, v, w) => HAND.at([u, v, w]);

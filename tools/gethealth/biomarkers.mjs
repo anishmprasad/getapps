@@ -264,7 +264,7 @@ add("glucose-random", "Random glucose", "RBS", "sugar", "mg/dL", [70, 140], ["pa
 add("hba1c", "HbA1c", "HbA1c", "sugar", "%", [4.0, 5.6], ["pancreas", "kidney", "eyeball"],
   "Glycated haemoglobin: the average blood sugar over the past 2–3 months.", "Rarely significant; can be falsely low with anaemia or recent blood loss.",
   "5.7–6.4% is the prediabetes range and 6.5% or above the diabetes range. In diabetes, lower HbA1c protects the eyes, kidneys, nerves and heart.",
-  { aka: ["hba1c", "hb a1c", "glycated haemoglobin", "glycated hemoglobin", "glycosylated haemoglobin", "glycosylated hemoglobin", "a1c"], alt: [{ u: "mmol/mol", f: 0.09148, o: 2.152 }], bands: [[0, 5.7, "Normal", "normal"], [5.7, 6.5, "Prediabetes range", "high"], [6.5, 1e9, "Diabetes range", "high"]] });
+  { aka: ["hba1c", "hb a1c", "hbalc", "hbatc", "hba1-c", "glycated haemoglobin", "glycated hemoglobin", "glycosylated haemoglobin", "glycosylated hemoglobin", "a1c"], alt: [{ u: "mmol/mol", f: 0.09148, o: 2.152 }], bands: [[0, 5.7, "Normal", "normal"], [5.7, 6.5, "Prediabetes range", "high"], [6.5, 1e9, "Diabetes range", "high"]] });
 add("insulin", "Fasting insulin", "Insulin", "sugar", "µIU/mL", [2, 25], ["pancreas"],
   "The hormone that moves sugar into cells.", "Type 1 diabetes or advanced type 2 diabetes.", "Insulin resistance — common with excess weight, PCOS and prediabetes.",
   { aka: ["insulin", "fasting insulin", "insulin fasting", "serum insulin"], alt: [{ u: "pmol/l", f: 0.144 }, { u: "miu/l", f: 1 }] });

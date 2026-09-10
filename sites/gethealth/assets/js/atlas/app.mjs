@@ -35,6 +35,7 @@ export const ICON = {
   link: svg('<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>', 16),
   isolate: svg('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/>', 16),
   chevron: svg('<path d="m9 6 6 6-6 6"/>', 14),
+  lock: svg('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>', 14),
 };
 
 const TPL = `
@@ -278,7 +279,7 @@ export class App {
     const isolated = vs.isolated && vs.isolated.has(it.id) && vs.isolated.size === 1;
     this.el.card.innerHTML = `
       <div class="at-card__head">
-        <span class="at-card__sys"><i style="--c:${sys.color}"></i>${esc(sys.name)}${p.grp ? `<span> · ${esc(p.grp)}</span>` : ""}</span>
+        <span class="at-card__sys"><i style="--c:${sys.color}"></i>${esc(sys.name)}${p.grp && p.grp !== sys.name ? `<span> · ${esc(p.grp)}</span>` : ""}</span>
         <button type="button" class="at-x" data-card="close" aria-label="Close">${ICON.x}</button>
       </div>
       <h2>${esc(it.name)}</h2>

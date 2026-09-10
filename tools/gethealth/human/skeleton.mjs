@@ -2,7 +2,7 @@
  * Human skeletal system — all 206 adult bones plus the principal
  * cartilages (costal cartilages, intervertebral discs, menisci).
  */
-import { add, sub, mul, norm, lerp, mid, alongFrame, mx, ell, bone, tube, sdf, sheet, S, both, makePart } from "../lib.mjs";
+import { add, sub, mul, norm, lerp, mid, alongFrame, ell, bone, tube, sdf, sheet, S, both, makePart } from "../lib.mjs";
 import { SPINE, V, STERNUM, L, HAND, FOOT } from "./rig.mjs";
 
 const parts = [];

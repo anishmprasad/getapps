@@ -4,8 +4,8 @@
  * Pulmonary arteries carry deoxygenated blood, so they are drawn blue
  * (and pulmonary veins red), as in every anatomy textbook.
  */
-import { add, lerp, tube, makePart } from "../lib.mjs";
-import { L, HAND, FOOT } from "./rig.mjs";
+import { tube, makePart } from "../lib.mjs";
+import { HAND, FOOT } from "./rig.mjs";
 
 const parts = [];
 const A = (p) => parts.push(makePart({ sys: "arteries", mat: "artery", ...p }));

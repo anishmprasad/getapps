@@ -50,11 +50,11 @@ function readValue(m, rest) {
   else if ((r = tail.match(/(?:<|≤|less than|upto|up to|below)\s*=?\s*(\d+(?:\.\d+)?)/i))) range = [0, toNum(r[1])];
   else if ((r = tail.match(/(?:>|≥|more than|above|greater than)\s*=?\s*(\d+(?:\.\d+)?)/i))) range = [toNum(r[1]), Infinity];
   if (range && !(range[0] < range[1])) range = null;
-  return { value, cmp: mm[1] || "", unit, range };
+  return { value, raw: mm[2], cmp: mm[1] || "", unit, range };
 }
 
 /** Find every recognised test in free text. */
-export function parseReport(text, markers) {
+export function parseReport(text, markers, { ocr = false } = {}) {
   const idx = buildIndex(markers);
   const lines = text.replace(/ /g, " ").replace(/\t/g, "   ").split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
   const found = new Map(), unmatched = [];
@@ -77,7 +77,7 @@ export function parseReport(text, markers) {
       // value printed on the following line (split PDF columns) — only if that line starts with one
       if (!/\d|negative|nil|absent|positive|trace|present|reactive|detected/i.test(rest) && /^([<>≤≥]=?\s*)?\d[\d.,]*(\s|$)|^(negative|nil|absent|positive|trace|present|non[-\s]?reactive|reactive)\b/i.test(lines[i + 1] || "")) rest += "   " + lines[i + 1];
       const v = readValue(e.m, rest);
-      if (v) { found.set(e.m.id, { marker: e.m, line, ...v }); got = true; break; }
+      if (v) { found.set(e.m.id, { marker: e.m, line, ocr, ...v }); got = true; break; }
     }
     if (!got && !cands.length && /[a-z]{3,}.*\d/i.test(line) && line.length < 90) unmatched.push(line);
   });
@@ -101,8 +101,26 @@ export function evaluate(r, sex) {
     }
   }
   const C = (x) => (conv ? x * conv.f + (conv.o || 0) : x);
-  const value = C(r.value);
-  const range = r.range ? r.range.map((x) => (isFinite(x) ? C(x) : x)) : null;
+  let value = C(r.value), note = "";
+  // OCR often loses decimal points ("11.4" → "114"): if the number is wildly
+  // implausible for this test and /10 or /100 makes it sensible, use that — and say so.
+  if (r.ocr && ref && !/[.,]/.test(String(r.raw ?? r.value)) && Number.isInteger(r.value)) {
+    const [lo, hi] = ref, ok = (x, k) => x >= (lo > 0 ? lo / k : 0) && x <= hi * k;
+    if (!ok(value, 4)) {
+      const d = [10, 100].find((f) => ok(value / f, 2));
+      if (d) { note = `Read as ${r.value}; the decimal point looked missing, so it's shown as ${fmt(value / d)}. Please check against your report.`; value /= d; }
+    }
+  }
+  let range = r.range ? r.range.map((x) => (isFinite(x) ? C(x) : x)) : null;
+  // A printed range far off this test's usual scale is misread (or in another
+  // unit): rescale it by a power of ten if that fits, otherwise ignore it.
+  if (range && ref && isFinite(range[1]) && ref[1] > 0) {
+    const ratio = range[1] / ref[1];
+    if (ratio > 4 || ratio < 0.25) {
+      const f = [10, 100, 0.1, 0.01].find((k) => { const q = (range[1] / k) / ref[1]; return q > 0.4 && q < 2.5; });
+      range = f && r.ocr ? range.map((x) => x / f) : null;
+    }
+  }
   let lo, hi, src = "inventory", label = "", status;
   if (m.bands) {
     const b = m.bands.find(([a, z]) => value >= a && value < z) || m.bands[m.bands.length - 1];
@@ -118,7 +136,7 @@ export function evaluate(r, sex) {
     const far = status === "high" ? value / hi : status === "low" ? lo / Math.max(value, 1e-9) : 1;
     if (far >= 2) label = status === "high" ? "Markedly high" : "Markedly low";
   }
-  return { ...r, value, lo, hi, src, status, label, display: `${r.cmp}${fmt(value)} ${m.unit || ""}`.trim() };
+  return { ...r, value, lo, hi, src, status, label, note, display: `${r.cmp}${fmt(value)} ${m.unit || ""}`.trim() };
 }
 export const fmt = (x) => (Math.abs(x) >= 100 ? Math.round(x).toLocaleString() : Math.abs(x) >= 10 ? (+x.toFixed(1)).toString() : (+x.toPrecision(3)).toString());
 

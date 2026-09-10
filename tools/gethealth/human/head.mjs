@@ -2,7 +2,7 @@
  * Head & neck soft anatomy: brain, eyes, ears, mouth and teeth, throat,
  * larynx and the neck glands.
  */
-import { add, sub, mul, norm, lerp, ell, tube, sdf, S, both, makePart } from "../lib.mjs";
+import { add, mul, ell, tube, sdf, S, both, makePart } from "../lib.mjs";
 import { SKULL, canalAt } from "./rig.mjs";
 
 const parts = [];

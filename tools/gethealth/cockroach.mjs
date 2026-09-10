@@ -3,7 +3,7 @@
  * biology). Model units: body length = 0.5 (a real adult is 34–53 mm).
  * Head towards +z, back towards +y, the insect's left towards +x.
  */
-import { add, lerp, mul, ell, bone, spin, tube, sdf, sheet, S, both, makePart } from "./lib.mjs";
+import { add, lerp, ell, spin, tube, sdf, sheet, S, both, makePart } from "./lib.mjs";
 
 const parts = [];
 const P = (p) => parts.push(makePart(p));

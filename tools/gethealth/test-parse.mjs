@@ -80,5 +80,21 @@ const near = (x, y, tol = 0.02) => (g) => Math.abs(g - y) <= Math.abs(y) * tol;
   expect("'mg' in trailing text is not magnesium", m2.has("magnesium"), false);
 }
 
+/* ---- OCR output (captured from Tesseract on a real screenshot) ---- */
+{
+  const OCR = ["Haemoglobin 114 g/dL 12.0-15.5", "Platelet Count 1.2 lakhs/cumm 15-45", "Serum Creatinine 1.6 mg/dL 06-11", "TSH 0.12 ulU/mL 04-45", "HbA1c 74 % 40-56", "Vitamin B12 620 pg/mL 211-91"].join("\n");
+  const { results } = parseReport(OCR, markers, { ocr: true });
+  const map = new Map(results.map((r) => [r.marker.id, evaluate(r, "f")]));
+  expect("OCR: 114 g/dL haemoglobin repaired to 11.4", map.get("hemoglobin").value, near(0, 11.4));
+  expect("OCR: repaired value carries a note", !!map.get("hemoglobin").note, true);
+  expect("OCR: HbA1c 74 % repaired to 7.4 → diabetes range", map.get("hba1c").label, "Diabetes range");
+  expect("OCR: creatinine 1.6 kept, garbled '06-11' range rescaled → high", map.get("creatinine").status, "high");
+  expect("OCR: platelets 1.2 lakhs → 120, low", map.get("platelets").status, "low");
+  expect("OCR: TSH 0.12 low against rescaled '04-45'", map.get("tsh").status, "low");
+  expect("OCR: impossible '211-91' range ignored → B12 in range", map.get("vitamin-b12").status, "normal");
+  const typed = new Map(parseReport("Haemoglobin 114 g/dL", markers).results.map((r) => [r.marker.id, evaluate(r, "f")]));
+  expect("typed text is never 'repaired'", typed.get("hemoglobin").value, near(0, 114));
+}
+
 console.log(fails ? `\n${fails} failing` : "\nall passing");
 process.exit(fails ? 1 : 0);

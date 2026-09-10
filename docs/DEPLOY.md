@@ -1,6 +1,6 @@
 # Deploying the product subdomains
 
-Four product sites live alongside the existing `getapps.tech` marketing site in the
+Product sites live alongside the existing `getapps.tech` marketing site in the
 same Firebase project (`getapps-tech`), using Firebase Hosting's multi-site
 support. The root site is untouched apart from the `ignore` list.
 
@@ -11,6 +11,7 @@ support. The root site is untouched apart from the `ignore` list.
 | `getpdf` | `sites/getpdf` | getpdf.getapps.tech |
 | `getjson` | `sites/getjson` | getjson.getapps.tech |
 | `getea` | `sites/getea` | getea.getapps.tech |
+| `gethealth` | `sites/gethealth` | gethealth.getapps.tech |
 
 ## 1. Create the hosting sites
 
@@ -21,6 +22,7 @@ firebase hosting:sites:create getapps-getinterest
 firebase hosting:sites:create getapps-getpdf
 firebase hosting:sites:create getapps-getjson
 firebase hosting:sites:create getapps-getea
+firebase hosting:sites:create getapps-gethealth
 ```
 
 `.firebaserc` already maps deploy targets to those IDs. If you choose different
@@ -30,7 +32,7 @@ IDs, update the `targets` block there to match.
 
 In the Firebase console, under *Hosting → (site) → Add custom domain*, add
 `getinterest.getapps.tech`, `getpdf.getapps.tech`, `getjson.getapps.tech` and
-`getea.getapps.tech` to
+`getea.getapps.tech` and `gethealth.getapps.tech` to
 their respective sites. Firebase will give you the DNS records to create at your
 registrar — normally two A records per subdomain, or a CNAME if your DNS
 provider supports flattening. Certificates are issued automatically once the
@@ -102,3 +104,19 @@ cannot reach production.
 3. Advertising is **off**: every position is commented out until an ad account
    exists. `node tools/ads.mjs --on` brings all 32 back, then one adapter
    function wires a network. See `docs/AD-INVENTORY.md`.
+
+## GetHealth data
+
+GetHealth's anatomy models and lab-test library are JSON under
+`sites/gethealth/data/`, generated from the sources in `tools/gethealth/`:
+
+```bash
+node tools/gethealth/build.mjs          # rebuild data/*.json and the guide's generated tables
+node tools/gethealth/build.mjs --check  # verify the committed output is current
+node tools/gethealth/test-parse.mjs     # lab-report parser tests
+```
+
+Edit the sources, never the JSON. The pages load the data from `/data/` by
+default; to serve it from a CDN instead, point the
+`<meta name="gethealth-data">` tag in each page at the CDN base URL. The
+`/data/**` responses carry `Access-Control-Allow-Origin: *` for that reason.

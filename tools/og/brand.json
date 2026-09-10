@@ -523,6 +523,105 @@
           ]
         }
       ]
+    },
+    {
+      "key": "gethealth",
+      "name": "GetHealth",
+      "word": [
+        "Get",
+        "Health"
+      ],
+      "mark": "getapps",
+      "origin": "https://gethealth.getapps.tech",
+      "domain": "gethealth.getapps.tech",
+      "root": "sites/gethealth",
+      "assetBase": "assets",
+      "urlBase": "/assets",
+      "accent": [
+        "#F2496B",
+        "#FF8FB1"
+      ],
+      "themeColor": "#06070B",
+      "manifest": {
+        "short_name": "GetHealth",
+        "description": "Explore the human body, frog and cockroach in 3D, and see which organs your lab results relate to — privately, in your browser."
+      },
+      "pages": [
+        {
+          "key": "index",
+          "file": "index.html",
+          "path": "/",
+          "primary": true,
+          "eyebrow": "3D anatomy atlas",
+          "headline": "The human body,\npart by part.",
+          "sub": "Every bone, the major muscles, organs, vessels and nerves in 3D — plus a private lab report scanner.",
+          "chips": [
+            "726 structures",
+            "Free",
+            "No signup"
+          ]
+        },
+        {
+          "key": "frog",
+          "file": "frog.html",
+          "path": "/frog",
+          "eyebrow": "Frog anatomy",
+          "headline": "A frog dissection,\nwithout the dissection.",
+          "sub": "Skeleton, three-chambered heart, lungs, gut and urogenital system of Rana tigrina in 3D.",
+          "chips": [
+            "For Class 11",
+            "Quiz mode"
+          ]
+        },
+        {
+          "key": "cockroach",
+          "file": "cockroach.html",
+          "path": "/cockroach",
+          "eyebrow": "Cockroach anatomy",
+          "headline": "Periplaneta americana,\ninside and out.",
+          "sub": "Segments, mouthparts, wings and legs, plus the open circulation, tracheae and nerve cord.",
+          "chips": [
+            "For Class 11",
+            "Quiz mode"
+          ]
+        },
+        {
+          "key": "report",
+          "file": "report.html",
+          "path": "/report",
+          "eyebrow": "Lab report scanner",
+          "headline": "See your blood test\non the body.",
+          "sub": "Drop in a report. Results are read in your browser and the related organs light up in 3D.",
+          "chips": [
+            "Nothing uploaded",
+            "125 tests"
+          ]
+        },
+        {
+          "key": "guide",
+          "file": "guide.html",
+          "path": "/guide",
+          "eyebrow": "Guide",
+          "headline": "How to explore,\nand what the tests mean.",
+          "sub": "Using the atlas, the quiz and Kids mode, and the full library of lab tests with typical ranges.",
+          "chips": [
+            "125 tests",
+            "Plain English"
+          ]
+        },
+        {
+          "key": "privacy",
+          "file": "privacy.html",
+          "path": "/privacy",
+          "eyebrow": "Privacy",
+          "headline": "Your reports never\nleave your browser.",
+          "sub": "What is read on your device, what is downloaded, and the little we collect.",
+          "chips": [
+            "Nothing uploaded",
+            "No account"
+          ]
+        }
+      ]
     }
   ]
 }

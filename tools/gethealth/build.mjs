@@ -66,4 +66,32 @@ for (const [name, data] of Object.entries(files)) {
   const extra = data.parts ? `${String(data.structures).padStart(5)} structures  ${String(data.parts.length).padStart(4)} entries` : "";
   console.log(`${name.padEnd(18)} ${(text.length / 1024).toFixed(1).padStart(7)} KB  ${extra}`);
 }
+/* ---- generated regions of the guide page ---- */
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const fmt = (x) => (x >= 1e8 ? "" : +x.toPrecision(3)).toString();
+const range = (m) => m.qual ? "Negative" : m.ref ? `${fmt(m.ref[0])}–${fmt(m.ref[1])}`.replace(/–$/, "+")
+  : `M ${fmt(m.refM[0])}–${fmt(m.refM[1])} · F ${fmt(m.refF[0])}–${fmt(m.refF[1])}`;
+const humanParts = new Map(human.parts.map((p) => [p.id, p.name]));
+const REGIONS = {
+  SPECIES: [human, frog, cockroach].map((sp) => {
+    const count = (sys) => sp.parts.filter((p) => p.sys === sys.id).reduce((n, p) => n + (p.bi ? 2 : 1), 0);
+    return `<h3>${esc(sp.title)} — ${files[`${sp.id}.json`].structures} structures</h3>\n<p>${esc(sp.blurb)} <a href="${sp.id === "human" ? "/" : `/${sp.id}`}">Open it</a>.</p>\n<ul>${sp.systems.map((s) => `<li><strong>${esc(s.name)}</strong> — ${count(s)} structures</li>`).join("")}</ul>`;
+  }).join("\n"),
+  TESTS: biomarkers.panels.map((p) => {
+    const rows = biomarkers.markers.filter((m) => m.panel === p.id).map((m) =>
+      `<tr><td>${esc(m.name)}</td><td>${esc(range(m))} ${esc(m.unit || "")}</td><td>${esc(m.purpose)}</td><td>${esc([...new Set(m.organs.map((o) => humanParts.get(o)))].slice(0, 4).join(", "))}</td></tr>`).join("");
+    return `<h3 style="margin:34px 0 12px">${esc(p.name)}</h3>\n<div class="table-scroll"><table class="gh-table"><thead><tr><th>Test</th><th>Typical adult range</th><th>What it measures</th><th>Related organs</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join("\n"),
+};
+{
+  const path = join(root, "sites/gethealth/guide.html");
+  const orig = readFileSync(path, "utf8");
+  let next = orig;
+  for (const [name, body] of Object.entries(REGIONS)) {
+    next = next.replace(new RegExp(`(<!-- GH:${name} start -->)[\\s\\S]*?(<!-- GH:${name} end -->)`), (_m, a, b) => `${a}\n${body}\n${b}`);
+  }
+  if (next !== orig) { drift++; if (check) console.log("DRIFT  guide.html"); else writeFileSync(path, next); }
+  console.log(`guide.html         regions: ${Object.keys(REGIONS).join(", ")}`);
+}
+
 if (check && drift) { console.error(`\n${drift} file(s) out of date — run: node tools/gethealth/build.mjs`); process.exit(1); }

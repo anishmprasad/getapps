@@ -208,15 +208,6 @@ export class Viewer extends EventTarget {
     this.camera.updateProjectionMatrix();
     this.dirty = true;
   }
-  /** Camera distance that fits a sphere of radius r into the free area. */
-  fitDist(r, k = 1.12) {
-    const w = this.host.clientWidth || 1, h = this.host.clientHeight || 1, p = this.pad || { t: 0, r: 0, b: 0, l: 0 };
-    const fh = Math.max(0.3, (h - p.t - p.b) / h), fw = Math.max(0.3, (w - p.l - p.r) / w);
-    const vf = (this.camera.fov * Math.PI) / 180, hf = 2 * Math.atan(Math.tan(vf / 2) * this.camera.aspect);
-    const a = Math.min(2 * Math.atan(Math.tan(vf / 2) * fh), 2 * Math.atan(Math.tan(hf / 2) * fw));
-    return Math.max((r * k) / Math.sin(a / 2), 0.08);
-  }
-
   loop(t) {
     requestAnimationFrame(this.loop);
     if (this.flight) this.stepFlight(t);
@@ -291,6 +282,12 @@ export class Viewer extends EventTarget {
     const s = this.state, p = mesh.userData.part;
     if (p.sex && p.sex !== s.sex) return false;
     if (s.isolated) return s.isolated.has(mesh.userData.id);
+    // Report / highlight mode: coloured parts always show; muscle and skin
+    // would bury the organs, so they step aside.
+    if (s.status) {
+      if (s.status.has(mesh.userData.id)) return true;
+      if (p.sys === "muscular" || p.sys === "integumentary") return false;
+    }
     return s.systems.has(p.sys) && !s.hidden.has(mesh.userData.id);
   }
 
@@ -431,41 +428,42 @@ export class Viewer extends EventTarget {
     }
     return box;
   }
+  /** Distance at which `box` fits the free area when seen from direction `dir`. */
+  fitBox(box, dir, pad = 1.1) {
+    const c = box.getCenter(new THREE.Vector3());
+    const w = this.host.clientWidth || 1, h = this.host.clientHeight || 1, p = this.pad || { t: 0, r: 0, b: 0, l: 0 };
+    const fh = Math.max(0.3, (h - p.t - p.b) / h), fw = Math.max(0.3, (w - p.l - p.r) / w);
+    const tv = Math.tan(((this.camera.fov * Math.PI) / 180) / 2) * fh, th = Math.tan(((this.camera.fov * Math.PI) / 180) / 2) * this.camera.aspect * fw;
+    const back = dir.clone().normalize(), f = back.clone().negate();
+    const right = new THREE.Vector3().crossVectors(f, new THREE.Vector3(0, 1, 0));
+    if (right.lengthSq() < 1e-6) right.set(1, 0, 0);
+    right.normalize();
+    const up = new THREE.Vector3().crossVectors(right, f).normalize();
+    let D = 0.08;
+    for (let i = 0; i < 8; i++) {
+      const q = new THREE.Vector3(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(c);
+      const x = Math.abs(q.dot(right)), y = Math.abs(q.dot(up)), z = q.dot(back);
+      D = Math.max(D, z + (x * pad) / th, z + (y * pad) / tv);
+    }
+    return { c, D };
+  }
   frame(meshes, animate = true, pad = 1.25) {
     if (!meshes.length) return;
-    const box = this.boundsOf(meshes);
-    const sphere = box.getBoundingSphere(new THREE.Sphere());
-    const dist = this.fitDist(sphere.radius, pad);
     const dir = this.camera.position.clone().sub(this.controls.target).normalize();
     if (!isFinite(dir.x) || dir.lengthSq() < 0.5) dir.set(0, 0.05, 1).normalize();
-    this.flyTo(sphere.center, sphere.center.clone().addScaledVector(dir, dist), animate);
+    const { c, D } = this.fitBox(this.boundsOf(meshes), dir, pad);
+    this.flyTo(c, c.clone().addScaledVector(dir, D), animate);
   }
+  homeDir() { return new THREE.Vector3(...(this.species.camera?.dir || [0, 0.08, 1])).normalize(); }
   frameAll(animate = true) {
     const shown = this.meshes.filter((m) => m.visible);
     if (!shown.length) return;
-    if (!animate) {
-      const cam = this.species.camera || {};
-      const box = this.boundsOf(shown), c = box.getCenter(new THREE.Vector3());
-      const sphere = box.getBoundingSphere(new THREE.Sphere());
-      const dist = this.fitDist(sphere.radius, 1.0);
-      this.controls.target.copy(c);
-      const dir = new THREE.Vector3(...(cam.dir || [0, 0.08, 1])).normalize();
-      this.camera.position.copy(c).addScaledVector(dir, dist);
-      this.controls.update();
-      this.dirty = true;
-      return;
-    }
-    this.frame(shown, true, 1.12);
+    const dir = this.homeDir();
+    const { c, D } = this.fitBox(this.boundsOf(shown), dir, 1.06);
+    this.flyTo(c, c.clone().addScaledVector(dir, D), animate);
+    if (!animate) this.controls.update();
   }
-  resetView() {
-    const shown = this.meshes.filter((m) => m.visible);
-    if (!shown.length) return;
-    const cam = this.species.camera || {};
-    const box = this.boundsOf(shown), sphere = box.getBoundingSphere(new THREE.Sphere());
-    const dist = this.fitDist(sphere.radius, 1.0);
-    const dir = new THREE.Vector3(...(cam.dir || [0, 0.08, 1])).normalize();
-    this.flyTo(sphere.center, sphere.center.clone().addScaledVector(dir, dist), true);
-  }
+  resetView() { this.frameAll(true); }
   focus(id) {
     const m = this.byId.get(id);
     if (m) this.frame([m], true, 2.4);

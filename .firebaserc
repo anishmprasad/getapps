@@ -22,6 +22,9 @@
         ],
         "paraphrase": [
           "getapps-paraphrase"
+        ],
+        "gethealth": [
+          "getapps-gethealth"
         ]
       }
     }

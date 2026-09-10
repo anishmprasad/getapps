@@ -174,8 +174,10 @@ export class App {
     this.updateCount();
     this.el.loading.hidden = true;
     this.loading = false;
+    // Keep the page's own <title> on first load; retitle only when switching species.
+    if (this.pageTitle === undefined) this.pageTitle = document.title;
+    else document.title = `${sp.title} — 3D ${sp.name.toLowerCase()} anatomy | GetHealth`;
     if (push) history.pushState({ species: id }, "", SPECIES_PATH[id] || "/");
-    document.title = `${sp.title} — 3D ${sp.name === "Human" ? "human anatomy" : `${sp.name.toLowerCase()} anatomy`} | GetHealth`;
     if (select && this.itemById.has(select)) this.select(select, { focus: true });
     if (id === "human") this.biomarkers().catch(() => {});
     this.dispatch("species", { id });
@@ -241,17 +243,30 @@ export class App {
     if (!vs.isolated && !vs.systems.has(it.part.sys)) this.setSystems(new Set([...vs.systems, it.part.sys]));
     if (vs.hidden.has(id)) { vs.hidden.delete(id); }
     if (vs.isolated && !vs.isolated.has(id)) vs.isolated = null;
-    this.viewer.setState({ selected: id });
+    this.viewer.setState({ selected: id, dim: null });
     this.renderCard(it);
-    if (focus) this.viewer.focus(id);
+    if (focus) {
+      this.viewer.focus(id);
+      clearTimeout(this.revealT);
+      this.revealT = setTimeout(() => this.revealIfHidden(id), 720);
+    }
     const u = new URL(location.href); u.searchParams.set("p", id); history.replaceState(history.state, "", u);
     this.updateCount();
+  }
+
+  /** A part found by search may be buried under muscle: if so, fade everything else. */
+  revealIfHidden(id) {
+    const v = this.viewer, p = v.screenPoint(id);
+    if (v.state.selected !== id || !p) return;
+    const r = v.renderer.domElement.getBoundingClientRect();
+    if (v.pick(r.left + p.x, r.top + p.y) !== id) v.setState({ dim: new Set([id]) });
   }
 
   closeCard() {
     this.el.card.hidden = true;
     this.root.classList.remove("has-card");
-    if (this.viewer.state.selected) this.viewer.setState({ selected: null });
+    clearTimeout(this.revealT);
+    if (this.viewer.state.selected || this.viewer.state.dim) this.viewer.setState({ selected: null, dim: null });
     const u = new URL(location.href);
     if (u.searchParams.has("p")) { u.searchParams.delete("p"); history.replaceState(history.state, "", u); }
   }
@@ -390,11 +405,28 @@ export class App {
     for (const [id, el] of this.labelSet) {
       const p = this.viewer.screenPoint(id);
       if (!p) { el.style.opacity = 0; continue; }
-      const clash = placed.some((q) => Math.abs(q.x - p.x) < 70 && Math.abs(q.y - p.y) < 18);
+      const clash = el.dataset.occ === "1" || placed.some((q) => Math.abs(q.x - p.x) < 70 && Math.abs(q.y - p.y) < 18);
       el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
       el.style.opacity = clash ? 0 : 1;
       if (!clash) placed.push(p);
     }
+    clearTimeout(this.occT);
+    this.occT = setTimeout(() => this.checkOcclusion(), 180);
+  }
+  /** Once the camera settles, hide labels whose structure is buried under others. */
+  checkOcclusion() {
+    if (!this.labelSet) return;
+    const v = this.viewer, r = v.renderer.domElement.getBoundingClientRect();
+    let changed = false;
+    for (const [id, el] of this.labelSet) {
+      const p = v.screenPoint(id);
+      if (!p) continue;
+      const hit = v.pick(r.left + p.x, r.top + p.y);
+      const same = hit === id || (hit && this.itemById.get(hit)?.part.org && this.itemById.get(hit).part.org === this.itemById.get(id)?.part.org);
+      const occ = same ? "0" : "1";
+      if (el.dataset.occ !== occ) { el.dataset.occ = occ; changed = true; }
+    }
+    if (changed) { clearTimeout(this.occT); this.positionLabels(); clearTimeout(this.occT); }
   }
 
   /* ------------------------------------------------------------ quiz */
@@ -565,7 +597,7 @@ export class App {
         e.preventDefault();
         this.resultIdx = (this.resultIdx + (e.key === "ArrowDown" ? 1 : -1) + list.length) % Math.max(list.length, 1);
         $$("[data-res]", el.results).forEach((n, i) => n.setAttribute("aria-selected", String(i === this.resultIdx)));
-      } else if (e.key === "Enter" && list[this.resultIdx]) { e.preventDefault(); this.pickResult(list[this.resultIdx].id); }
+      } else if ((e.key === "Enter" || e.keyCode === 13) && list[this.resultIdx]) { e.preventDefault(); this.pickResult(list[this.resultIdx].id); }
       else if (e.key === "Escape") { el.search.value = ""; this.search(""); el.search.blur(); }
     });
     el.results.addEventListener("mousedown", (e) => { const li = e.target.closest("[data-res]"); if (li) { e.preventDefault(); this.pickResult(li.dataset.res); } });

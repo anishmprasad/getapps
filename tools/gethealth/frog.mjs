@@ -1,0 +1,1 @@
+export default { id: "frog", name: "Frog", title: "Frog Atlas", blurb: "", camera: { target: [0, 0.1, 0], dist: 1.4, fov: 30 }, systems: [{ id: "skeletal", name: "Skeleton", color: "#E6D9BF" }], presets: [], parts: [] };

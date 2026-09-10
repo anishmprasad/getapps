@@ -54,6 +54,15 @@
         "paraphrase"
       ],
       "port": 4325
+    },
+    {
+      "name": "gethealth",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs",
+        "gethealth"
+      ],
+      "port": 4326
     }
   ]
 }

@@ -84,6 +84,7 @@
 [data-product="json"]     { --accent: #22D3EE; --accent-2: #6D5EF8; }
 [data-product="ea"]       { --accent: #F5B944; --accent-2: #22D3EE; }
 [data-product="phrase"]   { --accent: #7C5CF5; --accent-2: #C084FC; }
+[data-product="health"]   { --accent: #F2496B; --accent-2: #FF8FB1; }
 
 /* ---------- 2. Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }

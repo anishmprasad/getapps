@@ -4,7 +4,7 @@
  * Mirrors Firebase Hosting's cleanUrls behaviour so /emi-calculator resolves
  * to emi-calculator.html exactly as it will in production.
  *
- *   node tools/serve.mjs                 # getinterest:4321 getpdf:4322 getjson:4323 getea:4324 paraphrase:4325 main:4320
+ *   node tools/serve.mjs                 # getinterest:4321 getpdf:4322 getjson:4323 getea:4324 paraphrase:4325 gethealth:4326 main:4320
  *   node tools/serve.mjs getinterest     # just one, on 4321
  */
 import { createServer } from "node:http";
@@ -20,6 +20,7 @@ const SITES = {
   getjson:     { dir: "sites/getjson",      port: 4323 },
   getea:       { dir: "sites/getea",        port: 4324 },
   paraphrase:  { dir: "sites/paraphrase",   port: 4325 },
+  gethealth:   { dir: "sites/gethealth",    port: 4326 },
 };
 
 const TYPES = {
